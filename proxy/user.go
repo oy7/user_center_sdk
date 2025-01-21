@@ -1,0 +1,302 @@
+package proxy
+
+import (
+	"fmt"
+
+	"github.com/nicexiaonie/gtype"
+
+	pbUser "github.com/oy7/user_center_sdk/proto/user"
+)
+
+type User struct {
+	Url       string
+	Source    string
+	RequestId string
+	hook      func(logContext string)
+}
+
+func Init(url, source, requestId string) User {
+	if requestId == "" {
+		requestId = gtype.UniqueId()
+	}
+	return User{
+		Url:       url,
+		Source:    source,
+		RequestId: requestId,
+		hook: func(logContext string) {
+
+		},
+	}
+}
+
+func (u *User) SetLogHook(f func(logContext string)) {
+	u.hook = f
+}
+
+// ServiceSmsSendLogin 发送验证码
+func (u User) ServiceSmsSendLogin(phoneNumber string, smsCodeType pbUser.E_SMS_CODE_TYPE) (*pbUser.SMSSendLoginResp, error) {
+	conn, err := GetConnect(u.Url)
+	if err != nil {
+		u.hook(fmt.Sprintf("GetConnect err:%v", err))
+		return nil, err
+	}
+	defer conn.Close()
+	client := pbUser.NewUserServerClient(conn.Value())
+	ctx := GetMetadataCtx(u.RequestId, u.Source)
+	smsSendLoginReq := &pbUser.SMSSendLoginReq{
+		SmsCodeType: smsCodeType,
+		PhoneNumber: phoneNumber,
+	}
+	u.hook(fmt.Sprintf("grpcRequest SmsSendLogin, req:%+v", smsSendLoginReq))
+	resp, err := client.SmsSendLogin(ctx, smsSendLoginReq)
+	u.hook(fmt.Sprintf("grpcRequest UpdateUserInfo, resp:%+v; err:%v", resp, err))
+
+	return resp, err
+}
+
+// UserChangeMobile 修改手机号
+func (u User) UserChangeMobile(userId int64, phoneNumber, code string) (*pbUser.UpdateUserInfoResp, error) {
+	conn, err := GetConnect(u.Url)
+	if err != nil {
+		u.hook(fmt.Sprintf("GetConnect err:%v", err))
+		return nil, err
+	}
+	defer conn.Close()
+	client := pbUser.NewUserServerClient(conn.Value())
+	ctx := GetMetadataCtx(u.RequestId, u.Source)
+	updateUserInfoReq := &pbUser.UpdateUserInfoReq{
+		ModifyType: pbUser.UserModifyType_REBIND_PHONE,
+		Phone:      phoneNumber,
+		VerifyCode: code,
+	}
+	u.hook(fmt.Sprintf("grpcRequest UpdateUserInfo, req:%+v", updateUserInfoReq))
+	resp, err := client.UpdateUserInfo(ctx, updateUserInfoReq)
+	u.hook(fmt.Sprintf("grpcRequest UpdateUserInfo, resp:%+v; err:%v", resp, err))
+
+	return resp, err
+}
+
+// ApiUserLogin 用户登录
+func (u User) ApiUserLogin(req *pbUser.UserLoginReq) (*pbUser.UserLoginResp, error) {
+	conn, err := GetConnect(u.Url)
+	if err != nil {
+		u.hook(fmt.Sprintf("GetConnect err:%v", err))
+		return nil, err
+	}
+	defer conn.Close()
+	client := pbUser.NewUserServerClient(conn.Value())
+	ctx := GetMetadataCtx(u.RequestId, u.Source)
+	u.hook(fmt.Sprintf("grpcRequest UpdateUserInfo, req:%+v", req))
+	resp, err := client.UserLogin(ctx, req)
+	u.hook(fmt.Sprintf("grpcRequest UpdateUserInfo, resp:%+v; err:%v", resp, err))
+
+	return resp, err
+}
+
+// GetBaseInfo 获取用户基本信息
+func (u User) GetBaseInfo(userId uint64) (*pbUser.GetUserInfoResp, error) {
+	conn, err := GetConnect(u.Url)
+	if err != nil {
+		u.hook(fmt.Sprintf("GetConnect err:%v", err))
+		return nil, err
+	}
+	defer conn.Close()
+	client := pbUser.NewUserServerClient(conn.Value())
+	ctx := GetMetadataCtx(u.RequestId, u.Source)
+	req := &pbUser.GetUserInfoReq{
+		Uid: userId,
+	}
+	u.hook(fmt.Sprintf("grpcRequest GetUserInfo, req:%+v", req))
+	resp, err := client.GetUserInfo(ctx, req)
+	u.hook(fmt.Sprintf("grpcRequest GetUserInfo, resp:%+v", resp))
+
+	return resp, err
+}
+
+// GetBaseInfoDecode 获取用户基本信息解密
+func (u User) GetBaseInfoDecode(userId int64) (*pbUser.GetUserInfoResp, error) {
+	conn, err := GetConnect(u.Url)
+	if err != nil {
+		u.hook(fmt.Sprintf("GetConnect err:%v", err))
+		return nil, err
+	}
+	defer conn.Close()
+	client := pbUser.NewUserServerClient(conn.Value())
+	ctx := GetMetadataCtx(u.RequestId, u.Source)
+	req := &pbUser.GetUserInfoReq{
+		Uid: uint64(userId),
+	}
+	u.hook(fmt.Sprintf("grpcRequest GetUserInfo, req:%+v", req))
+	resp, err := client.GetUserInfo(ctx, req)
+	u.hook(fmt.Sprintf("grpcRequest GetUserInfo, resp:%+v", resp))
+
+	return resp, err
+}
+
+// SetBaseInfo 设置用户信息
+func (u User) SetBaseInfo(req *pbUser.UpdateUserInfoReq) (*pbUser.UpdateUserInfoResp, error) {
+	conn, err := GetConnect(u.Url)
+	if err != nil {
+		u.hook(fmt.Sprintf("GetConnect err:%v", err))
+		return nil, err
+	}
+	defer conn.Close()
+	client := pbUser.NewUserServerClient(conn.Value())
+	ctx := GetMetadataCtx(u.RequestId, u.Source)
+	u.hook(fmt.Sprintf("grpcRequest UpdateUserInfo, req:%+v", req))
+	resp, err := client.UpdateUserInfo(ctx, req)
+	u.hook(fmt.Sprintf("grpcRequest UpdateUserInfo, resp:%+v; err:%v", resp, err))
+
+	return resp, err
+}
+
+// BindWeChat 绑定微信
+func (u User) BindWeChat(userId uint64, wechatCode string) (*pbUser.OpenIDBindResp, error) {
+	conn, err := GetConnect(u.Url)
+	if err != nil {
+		u.hook(fmt.Sprintf("GetConnect err:%v", err))
+		return nil, err
+	}
+	defer conn.Close()
+	client := pbUser.NewUserServerClient(conn.Value())
+	ctx := GetMetadataCtx(u.RequestId, u.Source)
+	req := &pbUser.OpenIDBindReq{
+		UserId:     userId,
+		WechatCode: wechatCode,
+	}
+	u.hook(fmt.Sprintf("grpcRequest OpenIDBind, req:%+v", req))
+	resp, err := client.OpenIDBind(ctx, req)
+	u.hook(fmt.Sprintf("grpcRequest OpenIDBind, resp:%+v; err:%v", resp, err))
+
+	return resp, err
+}
+
+// func (u User) SyncWeChatData(body ApiBindWeChatReq) (ResponseUserBaseInfo, error) {
+// 	res := ResponseUserBaseInfo{}
+// 	request := ghttp.FromValues{}
+// 	request.Add("request_id", gtype.UniqueId())
+// 	request.Add("source", u.Source)
+// 	request.Add("body", body)
+// 	uri := "/api/service_wechat/sync_nick_profile"
+// 	u.hook(fmt.Sprintf("Request Uri:%s, body:%s", uri, request.EncodeJson()))
+// 	gr, err := ghttp.PostJsonRetry(u.Url+"/api/service_wechat/sync_nick_profile", request, nil, time.Second*3, 3)
+// 	u.hook(fmt.Sprintf("Response Uri:%s, body:%s", uri, gr.Body))
+// 	if err != nil {
+// 		return res, err
+// 	}
+// 	if gr.StatusCode != 200 {
+// 		return res, errors.New(fmt.Sprintf("请求失败, http.status.code: %d", gr.StatusCode))
+// 	}
+// 	err = json.Unmarshal([]byte(gr.Body), &res)
+// 	if err != nil {
+// 		return res, errors.New(fmt.Sprintf("解析失败. %s", err))
+// 	}
+// 	if res.Code != 0 {
+// 		return res, errors.New(gtype.ToString(res.Message))
+// 	}
+// 	return res, nil
+// }
+
+// RealName 实名认证
+func (u User) RealName(userId int64, userName, userIdNumber string) (*pbUser.UserCertificationResp, error) {
+	conn, err := GetConnect(u.Url)
+	if err != nil {
+		u.hook(fmt.Sprintf("GetConnect err:%v", err))
+		return nil, err
+	}
+	defer conn.Close()
+	client := pbUser.NewUserServerClient(conn.Value())
+	ctx := GetMetadataCtx(u.RequestId, u.Source)
+	req := &pbUser.UserCertificationReq{
+		// UserId:       userId,
+		UserName:     userName,
+		UserIdNumber: userIdNumber,
+	}
+	u.hook(fmt.Sprintf("grpcRequest UserCertification, req:%+v", req))
+	resp, err := client.UserCertification(ctx, req)
+	u.hook(fmt.Sprintf("grpcRequest UserCertification, resp:%+v; err:%v", resp, err))
+
+	return resp, err
+}
+
+// GetTreeUser 获取用户所属组织详情包含权限信息
+func (u User) GetTreeUser(userId uint64) (*pbUser.GetOrgTreeUserResp, error) {
+	conn, err := GetConnect(u.Url)
+	if err != nil {
+		u.hook(fmt.Sprintf("GetConnect err:%v", err))
+		return nil, err
+	}
+	defer conn.Close()
+	client := pbUser.NewUserServerClient(conn.Value())
+	ctx := GetMetadataCtx(u.RequestId, u.Source)
+	req := &pbUser.GetOrgTreeUserReq{
+		UserId: userId,
+	}
+	u.hook(fmt.Sprintf("grpcRequest GetOrgTreeUser, req:%+v", req))
+	resp, err := client.GetOrgTreeUser(ctx, req)
+	u.hook(fmt.Sprintf("grpcRequest GetOrgTreeUser, resp:%+v; err:%v", resp, err))
+
+	return resp, err
+}
+
+// BindTreeUser 绑定用户组织关系
+func (u User) BindTreeUser(userId uint64, orgId uint32) (*pbUser.BindUserToOrganizationResp, error) {
+	conn, err := GetConnect(u.Url)
+	if err != nil {
+		u.hook(fmt.Sprintf("GetConnect err:%v", err))
+		return nil, err
+	}
+	defer conn.Close()
+	client := pbUser.NewUserServerClient(conn.Value())
+	ctx := GetMetadataCtx(u.RequestId, u.Source)
+	req := &pbUser.BindUserToOrganizationReq{
+		UserId: userId,
+		OrgId:  orgId,
+	}
+	u.hook(fmt.Sprintf("grpcRequest BindOrgTreeUser, req:%+v", req))
+	resp, err := client.BindOrgTreeUser(ctx, req)
+	u.hook(fmt.Sprintf("grpcRequest BindOrgTreeUser, resp:%+v; err:%v", resp, err))
+
+	return resp, err
+}
+
+// UnBindTreeUser 解绑用户组织关系
+func (u User) UnBindTreeUser(userId uint64, orgId uint32) (*pbUser.UnbindUserToOrganizationResp, error) {
+	conn, err := GetConnect(u.Url)
+	if err != nil {
+		u.hook(fmt.Sprintf("GetConnect err:%v", err))
+		return nil, err
+	}
+	defer conn.Close()
+	client := pbUser.NewUserServerClient(conn.Value())
+	ctx := GetMetadataCtx(u.RequestId, u.Source)
+	req := &pbUser.UnbindUserToOrganizationReq{
+		UserId: userId,
+		OrgId:  orgId,
+	}
+	u.hook(fmt.Sprintf("grpcRequest UnBindOrgTreeUser, req:%+v", req))
+	resp, err := client.UnBindOrgTreeUser(ctx, req)
+	u.hook(fmt.Sprintf("grpcRequest UnBindOrgTreeUser, resp:%+v; err:%v", resp, err))
+
+	return resp, err
+}
+
+// GetTreeUserChildren 根据ID查询组织下的组织
+func (u User) GetTreeUserChildren(orgId uint32) (*pbUser.GetOrganizationChildrenResp, error) {
+	conn, err := GetConnect(u.Url)
+	if err != nil {
+		u.hook(fmt.Sprintf("GetConnect err:%v", err))
+		return nil, err
+	}
+	defer conn.Close()
+	client := pbUser.NewUserServerClient(conn.Value())
+	ctx := GetMetadataCtx(u.RequestId, u.Source)
+	req := &pbUser.GetOrganizationReq{
+		Id: orgId,
+	}
+	u.hook(fmt.Sprintf("grpcRequest GetOrgTreeChildren, req:%+v", req))
+	resp, err := client.GetOrgTreeChildren(ctx, req)
+	u.hook(fmt.Sprintf("grpcRequest GetOrgTreeChildren, resp:%+v; err:%v", resp, err))
+
+	return resp, err
+}
