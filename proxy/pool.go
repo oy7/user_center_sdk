@@ -13,10 +13,14 @@ var poolClient map[string]pool.Pool
 func GetConnect(addr string) (pool.Conn, error) {
 	p, ok := poolClient[addr]
 	if !ok {
-		p, err := pool.New(addr, pool.DefaultOptions)
+		var err error
+		p, err = pool.New(addr, pool.DefaultOptions)
 		if err != nil {
 			log.Fatalf("failed to new pool: %v", err)
 			return nil, err
+		}
+		if poolClient == nil {
+			poolClient = make(map[string]pool.Pool)
 		}
 		poolClient[addr] = p
 	}

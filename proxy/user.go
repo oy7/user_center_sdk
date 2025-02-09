@@ -3,8 +3,7 @@ package proxy
 import (
 	"fmt"
 
-	"github.com/nicexiaonie/gtype"
-
+	"github.com/google/uuid"
 	pbUser "github.com/oy7/user_center_sdk/proto/user"
 )
 
@@ -17,7 +16,7 @@ type User struct {
 
 func Init(url, source, requestId string) User {
 	if requestId == "" {
-		requestId = gtype.UniqueId()
+		requestId = uuid.New().String()
 	}
 	return User{
 		Url:       url,
