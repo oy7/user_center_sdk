@@ -132,7 +132,7 @@ func (u User) GetBaseInfoDecode(userId int64) (*pbUser.GetUserInfoResp, error) {
 	return resp, err
 }
 
-// GetUserPhonesByUidList 手机号获取用户uid
+// GetUserPhonesByUidList 批量获取手机号
 func (u User) GetUserPhonesByUidList(userIds []uint64) (*pbUser.GetUserPhonesResp, error) {
 	conn, err := GetConnect(u.Url)
 	if err != nil {
@@ -148,6 +148,26 @@ func (u User) GetUserPhonesByUidList(userIds []uint64) (*pbUser.GetUserPhonesRes
 	u.hook(fmt.Sprintf("grpcRequest GetUserPhonesByUidList, req:%+v", req))
 	resp, err := client.GetUserPhonesByUidList(ctx, req)
 	u.hook(fmt.Sprintf("grpcRequest GetUserPhonesByUidList, resp:%+v", resp))
+
+	return resp, err
+}
+
+// GetUserIdByPhone 手机号获取用户uid
+func (u User) GetUserIdByPhone(phone string) (*pbUser.GetUserIdByPhoneResp, error) {
+	conn, err := GetConnect(u.Url)
+	if err != nil {
+		u.hook(fmt.Sprintf("GetConnect err:%v", err))
+		return nil, err
+	}
+	defer conn.Close()
+	client := pbUser.NewUserServerClient(conn.Value())
+	ctx := GetMetadataCtx(u.RequestId, u.Source)
+	req := &pbUser.GetUserIdByPhoneReq{
+		Phone: phone,
+	}
+	u.hook(fmt.Sprintf("grpcRequest GetUserIdByPhone, req:%+v", req))
+	resp, err := client.GetUserIdByPhone(ctx, req)
+	u.hook(fmt.Sprintf("grpcRequest GetUserIdByPhone, resp:%+v", resp))
 
 	return resp, err
 }
