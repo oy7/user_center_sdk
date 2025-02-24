@@ -190,7 +190,7 @@ func (u User) SetBaseInfo(req *pbUser.UpdateUserInfoReq) (*pbUser.UpdateUserInfo
 }
 
 // BindWeChat 绑定微信
-func (u User) BindWeChat(userId uint64, wechatCode string) (*pbUser.OpenIDBindResp, error) {
+func (u User) BindWeChat(req *pbUser.OpenIDBindReq) (*pbUser.OpenIDBindResp, error) {
 	conn, err := GetConnect(u.Url)
 	if err != nil {
 		u.hook(fmt.Sprintf("GetConnect err:%v", err))
@@ -199,10 +199,6 @@ func (u User) BindWeChat(userId uint64, wechatCode string) (*pbUser.OpenIDBindRe
 	defer conn.Close()
 	client := pbUser.NewUserServerClient(conn.Value())
 	ctx := GetMetadataCtx(u.RequestId, u.Source)
-	req := &pbUser.OpenIDBindReq{
-		UserId:     userId,
-		WechatCode: wechatCode,
-	}
 	u.hook(fmt.Sprintf("grpcRequest OpenIDBind, req:%+v", req))
 	resp, err := client.OpenIDBind(ctx, req)
 	u.hook(fmt.Sprintf("grpcRequest OpenIDBind, resp:%+v; err:%v", resp, err))
