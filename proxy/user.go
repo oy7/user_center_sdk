@@ -233,7 +233,7 @@ func (u User) BindWeChat(req *pbUser.OpenIDBindReq) (*pbUser.OpenIDBindResp, err
 // }
 
 // RealName 实名认证
-func (u User) RealName(userId int64, userName, userIdNumber string) (*pbUser.UserCertificationResp, error) {
+func (u User) RealName(userId uint64, userName, userIdNumber string) (*pbUser.UserCertificationResp, error) {
 	conn, err := GetConnect(u.Url)
 	if err != nil {
 		u.hook(fmt.Sprintf("GetConnect err:%v", err))
@@ -243,7 +243,7 @@ func (u User) RealName(userId int64, userName, userIdNumber string) (*pbUser.Use
 	client := pbUser.NewUserServerClient(conn.Value())
 	ctx := GetMetadataCtx(u.RequestId, u.Source)
 	req := &pbUser.UserCertificationReq{
-		// UserId:       userId,
+		Uid:          userId,
 		UserName:     userName,
 		UserIdNumber: userIdNumber,
 	}
