@@ -36,7 +36,7 @@ func (u *User) SetLogHook(f func(logContext string)) {
 func (u User) ServiceSmsSendLogin(phoneNumber string, smsCodeType pbUser.E_SMS_CODE_TYPE) (*pbUser.SMSSendLoginResp, error) {
 	conn, err := GetConnect(u.Url)
 	if err != nil {
-		u.hook(fmt.Sprintf("GetConnect err:%v", err))
+		u.hook(fmt.Sprintf("GetConnect [RequestId:%s] err:%v", u.RequestId, err))
 		return nil, err
 	}
 	defer conn.Close()
@@ -46,9 +46,9 @@ func (u User) ServiceSmsSendLogin(phoneNumber string, smsCodeType pbUser.E_SMS_C
 		SmsCodeType: smsCodeType,
 		PhoneNumber: phoneNumber,
 	}
-	u.hook(fmt.Sprintf("grpcRequest SmsSendLogin, req:%+v", smsSendLoginReq))
+	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] SmsSendLogin, req:%+v", u.RequestId, smsSendLoginReq))
 	resp, err := client.SmsSendLogin(ctx, smsSendLoginReq)
-	u.hook(fmt.Sprintf("grpcRequest UpdateUserInfo, resp:%+v; err:%v", resp, err))
+	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] UpdateUserInfo, resp:%+v; err:%v", u.RequestId, resp, err))
 
 	return resp, err
 }
@@ -57,7 +57,7 @@ func (u User) ServiceSmsSendLogin(phoneNumber string, smsCodeType pbUser.E_SMS_C
 func (u User) UserChangeMobile(userId int64, phoneNumber, code string) (*pbUser.UpdateUserInfoResp, error) {
 	conn, err := GetConnect(u.Url)
 	if err != nil {
-		u.hook(fmt.Sprintf("GetConnect err:%v", err))
+		u.hook(fmt.Sprintf("GetConnect [RequestId:%s] err:%v", u.RequestId, err))
 		return nil, err
 	}
 	defer conn.Close()
@@ -68,9 +68,9 @@ func (u User) UserChangeMobile(userId int64, phoneNumber, code string) (*pbUser.
 		Phone:      phoneNumber,
 		VerifyCode: code,
 	}
-	u.hook(fmt.Sprintf("grpcRequest UpdateUserInfo, req:%+v", updateUserInfoReq))
+	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] UpdateUserInfo, req:%+v", u.RequestId, updateUserInfoReq))
 	resp, err := client.UpdateUserInfo(ctx, updateUserInfoReq)
-	u.hook(fmt.Sprintf("grpcRequest UpdateUserInfo, resp:%+v; err:%v", resp, err))
+	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] UpdateUserInfo, resp:%+v; err:%v", u.RequestId, resp, err))
 
 	return resp, err
 }
@@ -79,15 +79,15 @@ func (u User) UserChangeMobile(userId int64, phoneNumber, code string) (*pbUser.
 func (u User) ApiUserLogin(req *pbUser.UserLoginReq) (*pbUser.UserLoginResp, error) {
 	conn, err := GetConnect(u.Url)
 	if err != nil {
-		u.hook(fmt.Sprintf("GetConnect err:%v", err))
+		u.hook(fmt.Sprintf("GetConnect [RequestId:%s] err:%v", u.RequestId, err))
 		return nil, err
 	}
 	defer conn.Close()
 	client := pbUser.NewUserServerClient(conn.Value())
 	ctx := GetMetadataCtx(u.RequestId, u.Source)
-	u.hook(fmt.Sprintf("grpcRequest UpdateUserInfo, req:%+v", req))
+	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] UpdateUserInfo, req:%+v", u.RequestId, req))
 	resp, err := client.UserLogin(ctx, req)
-	u.hook(fmt.Sprintf("grpcRequest UpdateUserInfo, resp:%+v; err:%v", resp, err))
+	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] UpdateUserInfo, resp:%+v; err:%v", u.RequestId, resp, err))
 
 	return resp, err
 }
@@ -96,7 +96,7 @@ func (u User) ApiUserLogin(req *pbUser.UserLoginReq) (*pbUser.UserLoginResp, err
 func (u User) GetBaseInfo(userId uint64) (*pbUser.GetUserInfoResp, error) {
 	conn, err := GetConnect(u.Url)
 	if err != nil {
-		u.hook(fmt.Sprintf("GetConnect err:%v", err))
+		u.hook(fmt.Sprintf("GetConnect [RequestId:%s] err:%v", u.RequestId, err))
 		return nil, err
 	}
 	defer conn.Close()
@@ -105,9 +105,9 @@ func (u User) GetBaseInfo(userId uint64) (*pbUser.GetUserInfoResp, error) {
 	req := &pbUser.GetUserInfoReq{
 		Uid: userId,
 	}
-	u.hook(fmt.Sprintf("grpcRequest GetUserInfo, req:%+v", req))
+	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] GetUserInfo, req:%+v", u.RequestId, req))
 	resp, err := client.GetUserInfo(ctx, req)
-	u.hook(fmt.Sprintf("grpcRequest GetUserInfo, resp:%+v", resp))
+	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] GetUserInfo, resp:%+v; err:%v", u.RequestId, resp, err))
 
 	return resp, err
 }
@@ -116,7 +116,7 @@ func (u User) GetBaseInfo(userId uint64) (*pbUser.GetUserInfoResp, error) {
 func (u User) GetBaseInfoDecode(userId int64) (*pbUser.GetUserInfoResp, error) {
 	conn, err := GetConnect(u.Url)
 	if err != nil {
-		u.hook(fmt.Sprintf("GetConnect err:%v", err))
+		u.hook(fmt.Sprintf("GetConnect [RequestId:%s] err:%v", u.RequestId, err))
 		return nil, err
 	}
 	defer conn.Close()
@@ -125,9 +125,9 @@ func (u User) GetBaseInfoDecode(userId int64) (*pbUser.GetUserInfoResp, error) {
 	req := &pbUser.GetUserInfoReq{
 		Uid: uint64(userId),
 	}
-	u.hook(fmt.Sprintf("grpcRequest GetUserInfo, req:%+v", req))
+	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] GetUserInfo, req:%+v", u.RequestId, req))
 	resp, err := client.GetUserInfo(ctx, req)
-	u.hook(fmt.Sprintf("grpcRequest GetUserInfo, resp:%+v", resp))
+	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] GetUserInfo, resp:%+v; err:%v", u.RequestId, resp, err))
 
 	return resp, err
 }
@@ -136,7 +136,7 @@ func (u User) GetBaseInfoDecode(userId int64) (*pbUser.GetUserInfoResp, error) {
 func (u User) GetUserPhonesByUidList(userIds []uint64) (*pbUser.GetUserPhonesResp, error) {
 	conn, err := GetConnect(u.Url)
 	if err != nil {
-		u.hook(fmt.Sprintf("GetConnect err:%v", err))
+		u.hook(fmt.Sprintf("GetConnect [RequestId:%s] err:%v", u.RequestId, err))
 		return nil, err
 	}
 	defer conn.Close()
@@ -145,9 +145,9 @@ func (u User) GetUserPhonesByUidList(userIds []uint64) (*pbUser.GetUserPhonesRes
 	req := &pbUser.GetUserPhonesReq{
 		UidList: userIds,
 	}
-	u.hook(fmt.Sprintf("grpcRequest GetUserPhonesByUidList, req:%+v", req))
+	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] GetUserPhonesByUidList, req:%+v", u.RequestId, req))
 	resp, err := client.GetUserPhonesByUidList(ctx, req)
-	u.hook(fmt.Sprintf("grpcRequest GetUserPhonesByUidList, resp:%+v", resp))
+	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] GetUserPhonesByUidList, resp:%+v; err:%v", u.RequestId, resp, err))
 
 	return resp, err
 }
@@ -156,7 +156,7 @@ func (u User) GetUserPhonesByUidList(userIds []uint64) (*pbUser.GetUserPhonesRes
 func (u User) GetUserIdByPhone(phone string) (*pbUser.GetUserIdByPhoneResp, error) {
 	conn, err := GetConnect(u.Url)
 	if err != nil {
-		u.hook(fmt.Sprintf("GetConnect err:%v", err))
+		u.hook(fmt.Sprintf("GetConnect [RequestId:%s] err:%v", u.RequestId, err))
 		return nil, err
 	}
 	defer conn.Close()
@@ -165,9 +165,9 @@ func (u User) GetUserIdByPhone(phone string) (*pbUser.GetUserIdByPhoneResp, erro
 	req := &pbUser.GetUserIdByPhoneReq{
 		Phone: phone,
 	}
-	u.hook(fmt.Sprintf("grpcRequest GetUserIdByPhone, req:%+v", req))
+	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] GetUserIdByPhone, req:%+v", u.RequestId, req))
 	resp, err := client.GetUserIdByPhone(ctx, req)
-	u.hook(fmt.Sprintf("grpcRequest GetUserIdByPhone, resp:%+v", resp))
+	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] GetUserIdByPhone, resp:%+v; err:%v", u.RequestId, resp, err))
 
 	return resp, err
 }
@@ -176,15 +176,15 @@ func (u User) GetUserIdByPhone(phone string) (*pbUser.GetUserIdByPhoneResp, erro
 func (u User) SetBaseInfo(req *pbUser.UpdateUserInfoReq) (*pbUser.UpdateUserInfoResp, error) {
 	conn, err := GetConnect(u.Url)
 	if err != nil {
-		u.hook(fmt.Sprintf("GetConnect err:%v", err))
+		u.hook(fmt.Sprintf("GetConnect [RequestId:%s] err:%v", u.RequestId, err))
 		return nil, err
 	}
 	defer conn.Close()
 	client := pbUser.NewUserServerClient(conn.Value())
 	ctx := GetMetadataCtx(u.RequestId, u.Source)
-	u.hook(fmt.Sprintf("grpcRequest UpdateUserInfo, req:%+v", req))
+	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] UpdateUserInfo, req:%+v", u.RequestId, req))
 	resp, err := client.UpdateUserInfo(ctx, req)
-	u.hook(fmt.Sprintf("grpcRequest UpdateUserInfo, resp:%+v; err:%v", resp, err))
+	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] UpdateUserInfo, resp:%+v; err:%v", u.RequestId, resp, err))
 
 	return resp, err
 }
@@ -193,15 +193,15 @@ func (u User) SetBaseInfo(req *pbUser.UpdateUserInfoReq) (*pbUser.UpdateUserInfo
 func (u User) BindWeChat(req *pbUser.OpenIDBindReq) (*pbUser.OpenIDBindResp, error) {
 	conn, err := GetConnect(u.Url)
 	if err != nil {
-		u.hook(fmt.Sprintf("GetConnect err:%v", err))
+		u.hook(fmt.Sprintf("GetConnect [RequestId:%s] err:%v", u.RequestId, err))
 		return nil, err
 	}
 	defer conn.Close()
 	client := pbUser.NewUserServerClient(conn.Value())
 	ctx := GetMetadataCtx(u.RequestId, u.Source)
-	u.hook(fmt.Sprintf("grpcRequest OpenIDBind, req:%+v", req))
+	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] OpenIDBind, req:%+v", u.RequestId, req))
 	resp, err := client.OpenIDBind(ctx, req)
-	u.hook(fmt.Sprintf("grpcRequest OpenIDBind, resp:%+v; err:%v", resp, err))
+	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] OpenIDBind, resp:%+v; err:%v", u.RequestId, resp, err))
 
 	return resp, err
 }
@@ -236,7 +236,7 @@ func (u User) BindWeChat(req *pbUser.OpenIDBindReq) (*pbUser.OpenIDBindResp, err
 func (u User) RealName(userId uint64, userName, userIdNumber string) (*pbUser.UserCertificationResp, error) {
 	conn, err := GetConnect(u.Url)
 	if err != nil {
-		u.hook(fmt.Sprintf("GetConnect err:%v", err))
+		u.hook(fmt.Sprintf("GetConnect [RequestId:%s] err:%v", u.RequestId, err))
 		return nil, err
 	}
 	defer conn.Close()
@@ -247,9 +247,9 @@ func (u User) RealName(userId uint64, userName, userIdNumber string) (*pbUser.Us
 		UserName:     userName,
 		UserIdNumber: userIdNumber,
 	}
-	u.hook(fmt.Sprintf("grpcRequest UserCertification, req:%+v", req))
+	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] UserCertification, req:%+v", u.RequestId, req))
 	resp, err := client.UserCertification(ctx, req)
-	u.hook(fmt.Sprintf("grpcRequest UserCertification, resp:%+v; err:%v", resp, err))
+	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] UserCertification, resp:%+v; err:%v", u.RequestId, resp, err))
 
 	return resp, err
 }
@@ -258,7 +258,7 @@ func (u User) RealName(userId uint64, userName, userIdNumber string) (*pbUser.Us
 func (u User) GetTreeUser(userId uint64) (*pbUser.GetOrgTreeUserResp, error) {
 	conn, err := GetConnect(u.Url)
 	if err != nil {
-		u.hook(fmt.Sprintf("GetConnect err:%v", err))
+		u.hook(fmt.Sprintf("GetConnect [RequestId:%s] err:%v", u.RequestId, err))
 		return nil, err
 	}
 	defer conn.Close()
@@ -267,9 +267,9 @@ func (u User) GetTreeUser(userId uint64) (*pbUser.GetOrgTreeUserResp, error) {
 	req := &pbUser.GetOrgTreeUserReq{
 		UserId: userId,
 	}
-	u.hook(fmt.Sprintf("grpcRequest GetOrgTreeUser, req:%+v", req))
+	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] GetOrgTreeUser, req:%+v", u.RequestId, req))
 	resp, err := client.GetOrgTreeUser(ctx, req)
-	u.hook(fmt.Sprintf("grpcRequest GetOrgTreeUser, resp:%+v; err:%v", resp, err))
+	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] GetOrgTreeUser, resp:%+v; err:%v", u.RequestId, resp, err))
 
 	return resp, err
 }
@@ -278,7 +278,7 @@ func (u User) GetTreeUser(userId uint64) (*pbUser.GetOrgTreeUserResp, error) {
 func (u User) BindTreeUser(userId uint64, orgId uint32) (*pbUser.BindUserToOrganizationResp, error) {
 	conn, err := GetConnect(u.Url)
 	if err != nil {
-		u.hook(fmt.Sprintf("GetConnect err:%v", err))
+		u.hook(fmt.Sprintf("GetConnect [RequestId:%s] err:%v", u.RequestId, err))
 		return nil, err
 	}
 	defer conn.Close()
@@ -288,9 +288,9 @@ func (u User) BindTreeUser(userId uint64, orgId uint32) (*pbUser.BindUserToOrgan
 		UserId: userId,
 		OrgId:  orgId,
 	}
-	u.hook(fmt.Sprintf("grpcRequest BindOrgTreeUser, req:%+v", req))
+	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] BindOrgTreeUser, req:%+v", u.RequestId, req))
 	resp, err := client.BindOrgTreeUser(ctx, req)
-	u.hook(fmt.Sprintf("grpcRequest BindOrgTreeUser, resp:%+v; err:%v", resp, err))
+	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] BindOrgTreeUser, resp:%+v; err:%v", u.RequestId, resp, err))
 
 	return resp, err
 }
@@ -299,7 +299,7 @@ func (u User) BindTreeUser(userId uint64, orgId uint32) (*pbUser.BindUserToOrgan
 func (u User) UnBindTreeUser(userId uint64, orgId uint32) (*pbUser.UnbindUserToOrganizationResp, error) {
 	conn, err := GetConnect(u.Url)
 	if err != nil {
-		u.hook(fmt.Sprintf("GetConnect err:%v", err))
+		u.hook(fmt.Sprintf("GetConnect [RequestId:%s] err:%v", u.RequestId, err))
 		return nil, err
 	}
 	defer conn.Close()
@@ -309,9 +309,9 @@ func (u User) UnBindTreeUser(userId uint64, orgId uint32) (*pbUser.UnbindUserToO
 		UserId: userId,
 		OrgId:  orgId,
 	}
-	u.hook(fmt.Sprintf("grpcRequest UnBindOrgTreeUser, req:%+v", req))
+	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] UnBindOrgTreeUser, req:%+v", u.RequestId, req))
 	resp, err := client.UnBindOrgTreeUser(ctx, req)
-	u.hook(fmt.Sprintf("grpcRequest UnBindOrgTreeUser, resp:%+v; err:%v", resp, err))
+	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] UnBindOrgTreeUser, resp:%+v; err:%v", u.RequestId, resp, err))
 
 	return resp, err
 }
@@ -320,7 +320,7 @@ func (u User) UnBindTreeUser(userId uint64, orgId uint32) (*pbUser.UnbindUserToO
 func (u User) GetTreeUserChildren(orgId uint32) (*pbUser.GetOrganizationChildrenResp, error) {
 	conn, err := GetConnect(u.Url)
 	if err != nil {
-		u.hook(fmt.Sprintf("GetConnect err:%v", err))
+		u.hook(fmt.Sprintf("GetConnect [RequestId:%s] err:%v", u.RequestId, err))
 		return nil, err
 	}
 	defer conn.Close()
@@ -329,9 +329,9 @@ func (u User) GetTreeUserChildren(orgId uint32) (*pbUser.GetOrganizationChildren
 	req := &pbUser.GetOrganizationReq{
 		Id: orgId,
 	}
-	u.hook(fmt.Sprintf("grpcRequest GetOrgTreeChildren, req:%+v", req))
+	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] GetOrgTreeChildren, req:%+v", u.RequestId, req))
 	resp, err := client.GetOrgTreeChildren(ctx, req)
-	u.hook(fmt.Sprintf("grpcRequest GetOrgTreeChildren, resp:%+v; err:%v", resp, err))
+	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] GetOrgTreeChildren, resp:%+v; err:%v", u.RequestId, resp, err))
 
 	return resp, err
 }
