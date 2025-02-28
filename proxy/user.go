@@ -18,6 +18,7 @@ func Init(url, source, requestId string) User {
 	if requestId == "" {
 		requestId = uuid.New().String()
 	}
+	requestId = fmt.Sprintf("%s_sdk_%s", source, requestId)
 	return User{
 		Url:       url,
 		Source:    source,
@@ -48,7 +49,7 @@ func (u User) ServiceSmsSendLogin(phoneNumber string, smsCodeType pbUser.E_SMS_C
 	}
 	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] SmsSendLogin, req:%+v", u.RequestId, smsSendLoginReq))
 	resp, err := client.SmsSendLogin(ctx, smsSendLoginReq)
-	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] UpdateUserInfo, resp:%+v; err:%v", u.RequestId, resp, err))
+	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] SmsSendLogin, resp:%+v; err:%v", u.RequestId, resp, err))
 
 	return resp, err
 }
@@ -85,9 +86,9 @@ func (u User) ApiUserLogin(req *pbUser.UserLoginReq) (*pbUser.UserLoginResp, err
 	defer conn.Close()
 	client := pbUser.NewUserServerClient(conn.Value())
 	ctx := GetMetadataCtx(u.RequestId, u.Source)
-	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] UpdateUserInfo, req:%+v", u.RequestId, req))
+	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] UserLogin, req:%+v", u.RequestId, req))
 	resp, err := client.UserLogin(ctx, req)
-	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] UpdateUserInfo, resp:%+v; err:%v", u.RequestId, resp, err))
+	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] UserLogin, resp:%+v; err:%v", u.RequestId, resp, err))
 
 	return resp, err
 }
