@@ -65,6 +65,7 @@ func (u User) UserChangeMobile(userId int64, phoneNumber, code string) (*pbUser.
 	client := pbUser.NewUserServerClient(conn.Value())
 	ctx := GetMetadataCtx(u.RequestId, u.Source)
 	updateUserInfoReq := &pbUser.UpdateUserInfoReq{
+		Uid:        uint64(userId),
 		ModifyType: pbUser.UserModifyType_REBIND_PHONE,
 		Phone:      phoneNumber,
 		VerifyCode: code,
