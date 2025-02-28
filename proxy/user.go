@@ -70,9 +70,9 @@ func (u User) UserChangeMobile(userId int64, phoneNumber, code string) (*pbUser.
 		Phone:      phoneNumber,
 		VerifyCode: code,
 	}
-	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] UpdateUserInfo, req:%+v", u.RequestId, updateUserInfoReq))
+	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] UserChangeMobile-UpdateUserInfo, req:%+v", u.RequestId, updateUserInfoReq))
 	resp, err := client.UpdateUserInfo(ctx, updateUserInfoReq)
-	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] UpdateUserInfo, resp:%+v; err:%v", u.RequestId, resp, err))
+	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] UserChangeMobile-UpdateUserInfo, resp:%+v; err:%v", u.RequestId, resp, err))
 
 	return resp, err
 }
