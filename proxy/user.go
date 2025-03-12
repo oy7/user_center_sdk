@@ -125,7 +125,8 @@ func (u User) GetBaseInfoDecode(userId int64) (*pbUser.GetUserInfoResp, error) {
 	client := pbUser.NewUserServerClient(conn.Value())
 	ctx := GetMetadataCtx(u.RequestId, u.Source)
 	req := &pbUser.GetUserInfoReq{
-		Uid: uint64(userId),
+		Uid:        uint64(userId),
+		IsRealAuth: true,
 	}
 	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] GetUserInfo, req:%+v", u.RequestId, req))
 	resp, err := client.GetUserInfo(ctx, req)
