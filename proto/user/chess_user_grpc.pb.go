@@ -19,37 +19,78 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	UserServer_SmsSendLogin_FullMethodName           = "/new_chess.UserServer/SmsSendLogin"
-	UserServer_UserLogin_FullMethodName              = "/new_chess.UserServer/UserLogin"
-	UserServer_UserRegister_FullMethodName           = "/new_chess.UserServer/UserRegister"
-	UserServer_OpenIDBind_FullMethodName             = "/new_chess.UserServer/OpenIDBind"
-	UserServer_UserUploadGeographic_FullMethodName   = "/new_chess.UserServer/UserUploadGeographic"
-	UserServer_FeedbackUpload_FullMethodName         = "/new_chess.UserServer/FeedbackUpload"
-	UserServer_GetUserPhonesByUidList_FullMethodName = "/new_chess.UserServer/GetUserPhonesByUidList"
-	UserServer_UpdateUserInfo_FullMethodName         = "/new_chess.UserServer/UpdateUserInfo"
-	UserServer_GetUserInfo_FullMethodName            = "/new_chess.UserServer/GetUserInfo"
-	UserServer_BatchGetUserInfo_FullMethodName       = "/new_chess.UserServer/BatchGetUserInfo"
-	UserServer_GetUserIdByPhone_FullMethodName       = "/new_chess.UserServer/GetUserIdByPhone"
-	UserServer_UserCertification_FullMethodName      = "/new_chess.UserServer/UserCertification"
-	UserServer_AddOrgTree_FullMethodName             = "/new_chess.UserServer/AddOrgTree"
-	UserServer_SetOrgTree_FullMethodName             = "/new_chess.UserServer/SetOrgTree"
-	UserServer_DelOrgTree_FullMethodName             = "/new_chess.UserServer/DelOrgTree"
-	UserServer_GetOrgTree_FullMethodName             = "/new_chess.UserServer/GetOrgTree"
-	UserServer_GetOrgTreeChildren_FullMethodName     = "/new_chess.UserServer/GetOrgTreeChildren"
-	UserServer_GetOrgTreeUser_FullMethodName         = "/new_chess.UserServer/GetOrgTreeUser"
-	UserServer_GetOrgTreePerm_FullMethodName         = "/new_chess.UserServer/GetOrgTreePerm"
-	UserServer_GetOrgTreeBusiness_FullMethodName     = "/new_chess.UserServer/GetOrgTreeBusiness"
-	UserServer_BindOrgTreeUser_FullMethodName        = "/new_chess.UserServer/BindOrgTreeUser"
-	UserServer_UnBindOrgTreeUser_FullMethodName      = "/new_chess.UserServer/UnBindOrgTreeUser"
-	UserServer_UserSearch_FullMethodName             = "/new_chess.UserServer/UserSearch"
-	UserServer_GetUserConfig_FullMethodName          = "/new_chess.UserServer/GetUserConfig"
-	UserServer_SetUserConfig_FullMethodName          = "/new_chess.UserServer/SetUserConfig"
+	UserServer_AddPromotionModel_FullMethodName         = "/new_chess.UserServer/AddPromotionModel"
+	UserServer_UpdatePromotionModel_FullMethodName      = "/new_chess.UserServer/UpdatePromotionModel"
+	UserServer_AddPromotionRole_FullMethodName          = "/new_chess.UserServer/AddPromotionRole"
+	UserServer_UpdatePromotionRole_FullMethodName       = "/new_chess.UserServer/UpdatePromotionRole"
+	UserServer_AddPromotionRoleRatio_FullMethodName     = "/new_chess.UserServer/AddPromotionRoleRatio"
+	UserServer_UpdatePromotionRoleRatio_FullMethodName  = "/new_chess.UserServer/UpdatePromotionRoleRatio"
+	UserServer_AddBusinessModel_FullMethodName          = "/new_chess.UserServer/AddBusinessModel"
+	UserServer_UpdateBusinessModel_FullMethodName       = "/new_chess.UserServer/UpdateBusinessModel"
+	UserServer_AddBusinessModelRights_FullMethodName    = "/new_chess.UserServer/AddBusinessModelRights"
+	UserServer_UpdateBusinessModelRights_FullMethodName = "/new_chess.UserServer/UpdateBusinessModelRights"
+	UserServer_AddModel_FullMethodName                  = "/new_chess.UserServer/AddModel"
+	UserServer_UpdateModel_FullMethodName               = "/new_chess.UserServer/UpdateModel"
+	UserServer_AddMultistageModel_FullMethodName        = "/new_chess.UserServer/AddMultistageModel"
+	UserServer_AddTemplateModel_FullMethodName          = "/new_chess.UserServer/AddTemplateModel"
+	UserServer_GetMultistageModel_FullMethodName        = "/new_chess.UserServer/GetMultistageModel"
+	UserServer_AddModelTemplate_FullMethodName          = "/new_chess.UserServer/AddModelTemplate"
+	UserServer_GetModelTemplate_FullMethodName          = "/new_chess.UserServer/GetModelTemplate"
+	UserServer_GetModelTemplateList_FullMethodName      = "/new_chess.UserServer/GetModelTemplateList"
+	UserServer_GetModelTemplateGame_FullMethodName      = "/new_chess.UserServer/GetModelTemplateGame"
+	UserServer_SmsSendLogin_FullMethodName              = "/new_chess.UserServer/SmsSendLogin"
+	UserServer_UserLogin_FullMethodName                 = "/new_chess.UserServer/UserLogin"
+	UserServer_UserRegister_FullMethodName              = "/new_chess.UserServer/UserRegister"
+	UserServer_OpenIDBind_FullMethodName                = "/new_chess.UserServer/OpenIDBind"
+	UserServer_UserUploadGeographic_FullMethodName      = "/new_chess.UserServer/UserUploadGeographic"
+	UserServer_FeedbackUpload_FullMethodName            = "/new_chess.UserServer/FeedbackUpload"
+	UserServer_GetUserPhonesByUidList_FullMethodName    = "/new_chess.UserServer/GetUserPhonesByUidList"
+	UserServer_UpdateUserInfo_FullMethodName            = "/new_chess.UserServer/UpdateUserInfo"
+	UserServer_GetUserInfo_FullMethodName               = "/new_chess.UserServer/GetUserInfo"
+	UserServer_BatchGetUserInfo_FullMethodName          = "/new_chess.UserServer/BatchGetUserInfo"
+	UserServer_GetUserIdByPhone_FullMethodName          = "/new_chess.UserServer/GetUserIdByPhone"
+	UserServer_UserCertification_FullMethodName         = "/new_chess.UserServer/UserCertification"
+	UserServer_AddOrgTree_FullMethodName                = "/new_chess.UserServer/AddOrgTree"
+	UserServer_SetOrgTree_FullMethodName                = "/new_chess.UserServer/SetOrgTree"
+	UserServer_DelOrgTree_FullMethodName                = "/new_chess.UserServer/DelOrgTree"
+	UserServer_GetOrgTree_FullMethodName                = "/new_chess.UserServer/GetOrgTree"
+	UserServer_GetOrgTreeChildren_FullMethodName        = "/new_chess.UserServer/GetOrgTreeChildren"
+	UserServer_GetOrgTreeUser_FullMethodName            = "/new_chess.UserServer/GetOrgTreeUser"
+	UserServer_GetOrgTreePerm_FullMethodName            = "/new_chess.UserServer/GetOrgTreePerm"
+	UserServer_GetOrgTreeBusiness_FullMethodName        = "/new_chess.UserServer/GetOrgTreeBusiness"
+	UserServer_BindOrgTreeUser_FullMethodName           = "/new_chess.UserServer/BindOrgTreeUser"
+	UserServer_UnBindOrgTreeUser_FullMethodName         = "/new_chess.UserServer/UnBindOrgTreeUser"
+	UserServer_UserSearch_FullMethodName                = "/new_chess.UserServer/UserSearch"
+	UserServer_GetUserConfig_FullMethodName             = "/new_chess.UserServer/GetUserConfig"
+	UserServer_SetUserConfig_FullMethodName             = "/new_chess.UserServer/SetUserConfig"
+	UserServer_GetUserRoleList_FullMethodName           = "/new_chess.UserServer/GetUserRoleList"
 )
 
 // UserServerClient is the client API for UserServer service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UserServerClient interface {
+	// ==========================业务模式相关==========================//
+	AddPromotionModel(ctx context.Context, in *AddPromotionModelReq, opts ...grpc.CallOption) (*AddPromotionModelResp, error)
+	UpdatePromotionModel(ctx context.Context, in *UpdatePromotionModelReq, opts ...grpc.CallOption) (*UpdatePromotionModelResp, error)
+	AddPromotionRole(ctx context.Context, in *AddPromotionRoleReq, opts ...grpc.CallOption) (*AddPromotionRoleResp, error)
+	UpdatePromotionRole(ctx context.Context, in *UpdatePromotionRoleReq, opts ...grpc.CallOption) (*UpdatePromotionRoleResp, error)
+	AddPromotionRoleRatio(ctx context.Context, in *AddPromotionRoleRatioReq, opts ...grpc.CallOption) (*AddPromotionRoleRatioResp, error)
+	UpdatePromotionRoleRatio(ctx context.Context, in *UpdatePromotionRoleRatioReq, opts ...grpc.CallOption) (*UpdatePromotionRoleRatioResp, error)
+	AddBusinessModel(ctx context.Context, in *AddBusinessModelReq, opts ...grpc.CallOption) (*AddBusinessModelResp, error)
+	UpdateBusinessModel(ctx context.Context, in *UpdateBusinessModelReq, opts ...grpc.CallOption) (*UpdateBusinessModelResp, error)
+	AddBusinessModelRights(ctx context.Context, in *AddBusinessModelRightsReq, opts ...grpc.CallOption) (*AddBusinessModelRightsResp, error)
+	UpdateBusinessModelRights(ctx context.Context, in *UpdateBusinessModelRightsReq, opts ...grpc.CallOption) (*UpdateBusinessModelRightsResp, error)
+	AddModel(ctx context.Context, in *AddModelReq, opts ...grpc.CallOption) (*AddModelResp, error)
+	UpdateModel(ctx context.Context, in *UpdateModelReq, opts ...grpc.CallOption) (*UpdateModelResp, error)
+	AddMultistageModel(ctx context.Context, in *AddMultistageModelReq, opts ...grpc.CallOption) (*AddMultistageModelResp, error)
+	AddTemplateModel(ctx context.Context, in *AddTemplateModelReq, opts ...grpc.CallOption) (*AddTemplateModelResp, error)
+	GetMultistageModel(ctx context.Context, in *GetMultistageModelReq, opts ...grpc.CallOption) (*GetMultistageModelResp, error)
+	AddModelTemplate(ctx context.Context, in *AddModelTemplateReq, opts ...grpc.CallOption) (*AddModelTemplateResp, error)
+	GetModelTemplate(ctx context.Context, in *GetModelTemplateReq, opts ...grpc.CallOption) (*GetModelTemplateResp, error)
+	GetModelTemplateList(ctx context.Context, in *GetModelTemplateListReq, opts ...grpc.CallOption) (*GetModelTemplateListResp, error)
+	GetModelTemplateGame(ctx context.Context, in *GetModelTemplateGameReq, opts ...grpc.CallOption) (*GetModelTemplateGameResp, error)
+	// ==========================用户服务相关==========================//
 	SmsSendLogin(ctx context.Context, in *SMSSendLoginReq, opts ...grpc.CallOption) (*SMSSendLoginResp, error)
 	UserLogin(ctx context.Context, in *UserLoginReq, opts ...grpc.CallOption) (*UserLoginResp, error)
 	UserRegister(ctx context.Context, in *UserRegisterReq, opts ...grpc.CallOption) (*UserRegisterResp, error)
@@ -75,6 +116,7 @@ type UserServerClient interface {
 	UserSearch(ctx context.Context, in *UserSearchReq, opts ...grpc.CallOption) (*UserSearchResp, error)
 	GetUserConfig(ctx context.Context, in *GetUserConfigReq, opts ...grpc.CallOption) (*GetUserConfigResp, error)
 	SetUserConfig(ctx context.Context, in *SetUserConfigReq, opts ...grpc.CallOption) (*SetUserConfigResp, error)
+	GetUserRoleList(ctx context.Context, in *UserRoleListReq, opts ...grpc.CallOption) (*UserRoleListResp, error)
 }
 
 type userServerClient struct {
@@ -83,6 +125,196 @@ type userServerClient struct {
 
 func NewUserServerClient(cc grpc.ClientConnInterface) UserServerClient {
 	return &userServerClient{cc}
+}
+
+func (c *userServerClient) AddPromotionModel(ctx context.Context, in *AddPromotionModelReq, opts ...grpc.CallOption) (*AddPromotionModelResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AddPromotionModelResp)
+	err := c.cc.Invoke(ctx, UserServer_AddPromotionModel_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServerClient) UpdatePromotionModel(ctx context.Context, in *UpdatePromotionModelReq, opts ...grpc.CallOption) (*UpdatePromotionModelResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UpdatePromotionModelResp)
+	err := c.cc.Invoke(ctx, UserServer_UpdatePromotionModel_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServerClient) AddPromotionRole(ctx context.Context, in *AddPromotionRoleReq, opts ...grpc.CallOption) (*AddPromotionRoleResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AddPromotionRoleResp)
+	err := c.cc.Invoke(ctx, UserServer_AddPromotionRole_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServerClient) UpdatePromotionRole(ctx context.Context, in *UpdatePromotionRoleReq, opts ...grpc.CallOption) (*UpdatePromotionRoleResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UpdatePromotionRoleResp)
+	err := c.cc.Invoke(ctx, UserServer_UpdatePromotionRole_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServerClient) AddPromotionRoleRatio(ctx context.Context, in *AddPromotionRoleRatioReq, opts ...grpc.CallOption) (*AddPromotionRoleRatioResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AddPromotionRoleRatioResp)
+	err := c.cc.Invoke(ctx, UserServer_AddPromotionRoleRatio_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServerClient) UpdatePromotionRoleRatio(ctx context.Context, in *UpdatePromotionRoleRatioReq, opts ...grpc.CallOption) (*UpdatePromotionRoleRatioResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UpdatePromotionRoleRatioResp)
+	err := c.cc.Invoke(ctx, UserServer_UpdatePromotionRoleRatio_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServerClient) AddBusinessModel(ctx context.Context, in *AddBusinessModelReq, opts ...grpc.CallOption) (*AddBusinessModelResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AddBusinessModelResp)
+	err := c.cc.Invoke(ctx, UserServer_AddBusinessModel_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServerClient) UpdateBusinessModel(ctx context.Context, in *UpdateBusinessModelReq, opts ...grpc.CallOption) (*UpdateBusinessModelResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UpdateBusinessModelResp)
+	err := c.cc.Invoke(ctx, UserServer_UpdateBusinessModel_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServerClient) AddBusinessModelRights(ctx context.Context, in *AddBusinessModelRightsReq, opts ...grpc.CallOption) (*AddBusinessModelRightsResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AddBusinessModelRightsResp)
+	err := c.cc.Invoke(ctx, UserServer_AddBusinessModelRights_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServerClient) UpdateBusinessModelRights(ctx context.Context, in *UpdateBusinessModelRightsReq, opts ...grpc.CallOption) (*UpdateBusinessModelRightsResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UpdateBusinessModelRightsResp)
+	err := c.cc.Invoke(ctx, UserServer_UpdateBusinessModelRights_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServerClient) AddModel(ctx context.Context, in *AddModelReq, opts ...grpc.CallOption) (*AddModelResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AddModelResp)
+	err := c.cc.Invoke(ctx, UserServer_AddModel_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServerClient) UpdateModel(ctx context.Context, in *UpdateModelReq, opts ...grpc.CallOption) (*UpdateModelResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UpdateModelResp)
+	err := c.cc.Invoke(ctx, UserServer_UpdateModel_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServerClient) AddMultistageModel(ctx context.Context, in *AddMultistageModelReq, opts ...grpc.CallOption) (*AddMultistageModelResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AddMultistageModelResp)
+	err := c.cc.Invoke(ctx, UserServer_AddMultistageModel_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServerClient) AddTemplateModel(ctx context.Context, in *AddTemplateModelReq, opts ...grpc.CallOption) (*AddTemplateModelResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AddTemplateModelResp)
+	err := c.cc.Invoke(ctx, UserServer_AddTemplateModel_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServerClient) GetMultistageModel(ctx context.Context, in *GetMultistageModelReq, opts ...grpc.CallOption) (*GetMultistageModelResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetMultistageModelResp)
+	err := c.cc.Invoke(ctx, UserServer_GetMultistageModel_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServerClient) AddModelTemplate(ctx context.Context, in *AddModelTemplateReq, opts ...grpc.CallOption) (*AddModelTemplateResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AddModelTemplateResp)
+	err := c.cc.Invoke(ctx, UserServer_AddModelTemplate_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServerClient) GetModelTemplate(ctx context.Context, in *GetModelTemplateReq, opts ...grpc.CallOption) (*GetModelTemplateResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetModelTemplateResp)
+	err := c.cc.Invoke(ctx, UserServer_GetModelTemplate_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServerClient) GetModelTemplateList(ctx context.Context, in *GetModelTemplateListReq, opts ...grpc.CallOption) (*GetModelTemplateListResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetModelTemplateListResp)
+	err := c.cc.Invoke(ctx, UserServer_GetModelTemplateList_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServerClient) GetModelTemplateGame(ctx context.Context, in *GetModelTemplateGameReq, opts ...grpc.CallOption) (*GetModelTemplateGameResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetModelTemplateGameResp)
+	err := c.cc.Invoke(ctx, UserServer_GetModelTemplateGame_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *userServerClient) SmsSendLogin(ctx context.Context, in *SMSSendLoginReq, opts ...grpc.CallOption) (*SMSSendLoginResp, error) {
@@ -335,10 +567,41 @@ func (c *userServerClient) SetUserConfig(ctx context.Context, in *SetUserConfigR
 	return out, nil
 }
 
+func (c *userServerClient) GetUserRoleList(ctx context.Context, in *UserRoleListReq, opts ...grpc.CallOption) (*UserRoleListResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UserRoleListResp)
+	err := c.cc.Invoke(ctx, UserServer_GetUserRoleList_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServerServer is the server API for UserServer service.
 // All implementations must embed UnimplementedUserServerServer
 // for forward compatibility.
 type UserServerServer interface {
+	// ==========================业务模式相关==========================//
+	AddPromotionModel(context.Context, *AddPromotionModelReq) (*AddPromotionModelResp, error)
+	UpdatePromotionModel(context.Context, *UpdatePromotionModelReq) (*UpdatePromotionModelResp, error)
+	AddPromotionRole(context.Context, *AddPromotionRoleReq) (*AddPromotionRoleResp, error)
+	UpdatePromotionRole(context.Context, *UpdatePromotionRoleReq) (*UpdatePromotionRoleResp, error)
+	AddPromotionRoleRatio(context.Context, *AddPromotionRoleRatioReq) (*AddPromotionRoleRatioResp, error)
+	UpdatePromotionRoleRatio(context.Context, *UpdatePromotionRoleRatioReq) (*UpdatePromotionRoleRatioResp, error)
+	AddBusinessModel(context.Context, *AddBusinessModelReq) (*AddBusinessModelResp, error)
+	UpdateBusinessModel(context.Context, *UpdateBusinessModelReq) (*UpdateBusinessModelResp, error)
+	AddBusinessModelRights(context.Context, *AddBusinessModelRightsReq) (*AddBusinessModelRightsResp, error)
+	UpdateBusinessModelRights(context.Context, *UpdateBusinessModelRightsReq) (*UpdateBusinessModelRightsResp, error)
+	AddModel(context.Context, *AddModelReq) (*AddModelResp, error)
+	UpdateModel(context.Context, *UpdateModelReq) (*UpdateModelResp, error)
+	AddMultistageModel(context.Context, *AddMultistageModelReq) (*AddMultistageModelResp, error)
+	AddTemplateModel(context.Context, *AddTemplateModelReq) (*AddTemplateModelResp, error)
+	GetMultistageModel(context.Context, *GetMultistageModelReq) (*GetMultistageModelResp, error)
+	AddModelTemplate(context.Context, *AddModelTemplateReq) (*AddModelTemplateResp, error)
+	GetModelTemplate(context.Context, *GetModelTemplateReq) (*GetModelTemplateResp, error)
+	GetModelTemplateList(context.Context, *GetModelTemplateListReq) (*GetModelTemplateListResp, error)
+	GetModelTemplateGame(context.Context, *GetModelTemplateGameReq) (*GetModelTemplateGameResp, error)
+	// ==========================用户服务相关==========================//
 	SmsSendLogin(context.Context, *SMSSendLoginReq) (*SMSSendLoginResp, error)
 	UserLogin(context.Context, *UserLoginReq) (*UserLoginResp, error)
 	UserRegister(context.Context, *UserRegisterReq) (*UserRegisterResp, error)
@@ -364,6 +627,7 @@ type UserServerServer interface {
 	UserSearch(context.Context, *UserSearchReq) (*UserSearchResp, error)
 	GetUserConfig(context.Context, *GetUserConfigReq) (*GetUserConfigResp, error)
 	SetUserConfig(context.Context, *SetUserConfigReq) (*SetUserConfigResp, error)
+	GetUserRoleList(context.Context, *UserRoleListReq) (*UserRoleListResp, error)
 	mustEmbedUnimplementedUserServerServer()
 }
 
@@ -374,6 +638,63 @@ type UserServerServer interface {
 // pointer dereference when methods are called.
 type UnimplementedUserServerServer struct{}
 
+func (UnimplementedUserServerServer) AddPromotionModel(context.Context, *AddPromotionModelReq) (*AddPromotionModelResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddPromotionModel not implemented")
+}
+func (UnimplementedUserServerServer) UpdatePromotionModel(context.Context, *UpdatePromotionModelReq) (*UpdatePromotionModelResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdatePromotionModel not implemented")
+}
+func (UnimplementedUserServerServer) AddPromotionRole(context.Context, *AddPromotionRoleReq) (*AddPromotionRoleResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddPromotionRole not implemented")
+}
+func (UnimplementedUserServerServer) UpdatePromotionRole(context.Context, *UpdatePromotionRoleReq) (*UpdatePromotionRoleResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdatePromotionRole not implemented")
+}
+func (UnimplementedUserServerServer) AddPromotionRoleRatio(context.Context, *AddPromotionRoleRatioReq) (*AddPromotionRoleRatioResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddPromotionRoleRatio not implemented")
+}
+func (UnimplementedUserServerServer) UpdatePromotionRoleRatio(context.Context, *UpdatePromotionRoleRatioReq) (*UpdatePromotionRoleRatioResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdatePromotionRoleRatio not implemented")
+}
+func (UnimplementedUserServerServer) AddBusinessModel(context.Context, *AddBusinessModelReq) (*AddBusinessModelResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddBusinessModel not implemented")
+}
+func (UnimplementedUserServerServer) UpdateBusinessModel(context.Context, *UpdateBusinessModelReq) (*UpdateBusinessModelResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateBusinessModel not implemented")
+}
+func (UnimplementedUserServerServer) AddBusinessModelRights(context.Context, *AddBusinessModelRightsReq) (*AddBusinessModelRightsResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddBusinessModelRights not implemented")
+}
+func (UnimplementedUserServerServer) UpdateBusinessModelRights(context.Context, *UpdateBusinessModelRightsReq) (*UpdateBusinessModelRightsResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateBusinessModelRights not implemented")
+}
+func (UnimplementedUserServerServer) AddModel(context.Context, *AddModelReq) (*AddModelResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddModel not implemented")
+}
+func (UnimplementedUserServerServer) UpdateModel(context.Context, *UpdateModelReq) (*UpdateModelResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateModel not implemented")
+}
+func (UnimplementedUserServerServer) AddMultistageModel(context.Context, *AddMultistageModelReq) (*AddMultistageModelResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddMultistageModel not implemented")
+}
+func (UnimplementedUserServerServer) AddTemplateModel(context.Context, *AddTemplateModelReq) (*AddTemplateModelResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddTemplateModel not implemented")
+}
+func (UnimplementedUserServerServer) GetMultistageModel(context.Context, *GetMultistageModelReq) (*GetMultistageModelResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMultistageModel not implemented")
+}
+func (UnimplementedUserServerServer) AddModelTemplate(context.Context, *AddModelTemplateReq) (*AddModelTemplateResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddModelTemplate not implemented")
+}
+func (UnimplementedUserServerServer) GetModelTemplate(context.Context, *GetModelTemplateReq) (*GetModelTemplateResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetModelTemplate not implemented")
+}
+func (UnimplementedUserServerServer) GetModelTemplateList(context.Context, *GetModelTemplateListReq) (*GetModelTemplateListResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetModelTemplateList not implemented")
+}
+func (UnimplementedUserServerServer) GetModelTemplateGame(context.Context, *GetModelTemplateGameReq) (*GetModelTemplateGameResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetModelTemplateGame not implemented")
+}
 func (UnimplementedUserServerServer) SmsSendLogin(context.Context, *SMSSendLoginReq) (*SMSSendLoginResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SmsSendLogin not implemented")
 }
@@ -449,6 +770,9 @@ func (UnimplementedUserServerServer) GetUserConfig(context.Context, *GetUserConf
 func (UnimplementedUserServerServer) SetUserConfig(context.Context, *SetUserConfigReq) (*SetUserConfigResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetUserConfig not implemented")
 }
+func (UnimplementedUserServerServer) GetUserRoleList(context.Context, *UserRoleListReq) (*UserRoleListResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserRoleList not implemented")
+}
 func (UnimplementedUserServerServer) mustEmbedUnimplementedUserServerServer() {}
 func (UnimplementedUserServerServer) testEmbeddedByValue()                    {}
 
@@ -468,6 +792,348 @@ func RegisterUserServerServer(s grpc.ServiceRegistrar, srv UserServerServer) {
 		t.testEmbeddedByValue()
 	}
 	s.RegisterService(&UserServer_ServiceDesc, srv)
+}
+
+func _UserServer_AddPromotionModel_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddPromotionModelReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServerServer).AddPromotionModel(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserServer_AddPromotionModel_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServerServer).AddPromotionModel(ctx, req.(*AddPromotionModelReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserServer_UpdatePromotionModel_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdatePromotionModelReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServerServer).UpdatePromotionModel(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserServer_UpdatePromotionModel_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServerServer).UpdatePromotionModel(ctx, req.(*UpdatePromotionModelReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserServer_AddPromotionRole_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddPromotionRoleReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServerServer).AddPromotionRole(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserServer_AddPromotionRole_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServerServer).AddPromotionRole(ctx, req.(*AddPromotionRoleReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserServer_UpdatePromotionRole_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdatePromotionRoleReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServerServer).UpdatePromotionRole(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserServer_UpdatePromotionRole_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServerServer).UpdatePromotionRole(ctx, req.(*UpdatePromotionRoleReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserServer_AddPromotionRoleRatio_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddPromotionRoleRatioReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServerServer).AddPromotionRoleRatio(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserServer_AddPromotionRoleRatio_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServerServer).AddPromotionRoleRatio(ctx, req.(*AddPromotionRoleRatioReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserServer_UpdatePromotionRoleRatio_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdatePromotionRoleRatioReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServerServer).UpdatePromotionRoleRatio(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserServer_UpdatePromotionRoleRatio_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServerServer).UpdatePromotionRoleRatio(ctx, req.(*UpdatePromotionRoleRatioReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserServer_AddBusinessModel_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddBusinessModelReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServerServer).AddBusinessModel(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserServer_AddBusinessModel_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServerServer).AddBusinessModel(ctx, req.(*AddBusinessModelReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserServer_UpdateBusinessModel_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateBusinessModelReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServerServer).UpdateBusinessModel(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserServer_UpdateBusinessModel_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServerServer).UpdateBusinessModel(ctx, req.(*UpdateBusinessModelReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserServer_AddBusinessModelRights_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddBusinessModelRightsReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServerServer).AddBusinessModelRights(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserServer_AddBusinessModelRights_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServerServer).AddBusinessModelRights(ctx, req.(*AddBusinessModelRightsReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserServer_UpdateBusinessModelRights_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateBusinessModelRightsReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServerServer).UpdateBusinessModelRights(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserServer_UpdateBusinessModelRights_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServerServer).UpdateBusinessModelRights(ctx, req.(*UpdateBusinessModelRightsReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserServer_AddModel_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddModelReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServerServer).AddModel(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserServer_AddModel_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServerServer).AddModel(ctx, req.(*AddModelReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserServer_UpdateModel_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateModelReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServerServer).UpdateModel(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserServer_UpdateModel_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServerServer).UpdateModel(ctx, req.(*UpdateModelReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserServer_AddMultistageModel_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddMultistageModelReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServerServer).AddMultistageModel(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserServer_AddMultistageModel_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServerServer).AddMultistageModel(ctx, req.(*AddMultistageModelReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserServer_AddTemplateModel_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddTemplateModelReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServerServer).AddTemplateModel(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserServer_AddTemplateModel_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServerServer).AddTemplateModel(ctx, req.(*AddTemplateModelReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserServer_GetMultistageModel_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetMultistageModelReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServerServer).GetMultistageModel(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserServer_GetMultistageModel_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServerServer).GetMultistageModel(ctx, req.(*GetMultistageModelReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserServer_AddModelTemplate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddModelTemplateReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServerServer).AddModelTemplate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserServer_AddModelTemplate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServerServer).AddModelTemplate(ctx, req.(*AddModelTemplateReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserServer_GetModelTemplate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetModelTemplateReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServerServer).GetModelTemplate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserServer_GetModelTemplate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServerServer).GetModelTemplate(ctx, req.(*GetModelTemplateReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserServer_GetModelTemplateList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetModelTemplateListReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServerServer).GetModelTemplateList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserServer_GetModelTemplateList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServerServer).GetModelTemplateList(ctx, req.(*GetModelTemplateListReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserServer_GetModelTemplateGame_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetModelTemplateGameReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServerServer).GetModelTemplateGame(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserServer_GetModelTemplateGame_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServerServer).GetModelTemplateGame(ctx, req.(*GetModelTemplateGameReq))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _UserServer_SmsSendLogin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -920,6 +1586,24 @@ func _UserServer_SetUserConfig_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserServer_GetUserRoleList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserRoleListReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServerServer).GetUserRoleList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserServer_GetUserRoleList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServerServer).GetUserRoleList(ctx, req.(*UserRoleListReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserServer_ServiceDesc is the grpc.ServiceDesc for UserServer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -927,6 +1611,82 @@ var UserServer_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "new_chess.UserServer",
 	HandlerType: (*UserServerServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "AddPromotionModel",
+			Handler:    _UserServer_AddPromotionModel_Handler,
+		},
+		{
+			MethodName: "UpdatePromotionModel",
+			Handler:    _UserServer_UpdatePromotionModel_Handler,
+		},
+		{
+			MethodName: "AddPromotionRole",
+			Handler:    _UserServer_AddPromotionRole_Handler,
+		},
+		{
+			MethodName: "UpdatePromotionRole",
+			Handler:    _UserServer_UpdatePromotionRole_Handler,
+		},
+		{
+			MethodName: "AddPromotionRoleRatio",
+			Handler:    _UserServer_AddPromotionRoleRatio_Handler,
+		},
+		{
+			MethodName: "UpdatePromotionRoleRatio",
+			Handler:    _UserServer_UpdatePromotionRoleRatio_Handler,
+		},
+		{
+			MethodName: "AddBusinessModel",
+			Handler:    _UserServer_AddBusinessModel_Handler,
+		},
+		{
+			MethodName: "UpdateBusinessModel",
+			Handler:    _UserServer_UpdateBusinessModel_Handler,
+		},
+		{
+			MethodName: "AddBusinessModelRights",
+			Handler:    _UserServer_AddBusinessModelRights_Handler,
+		},
+		{
+			MethodName: "UpdateBusinessModelRights",
+			Handler:    _UserServer_UpdateBusinessModelRights_Handler,
+		},
+		{
+			MethodName: "AddModel",
+			Handler:    _UserServer_AddModel_Handler,
+		},
+		{
+			MethodName: "UpdateModel",
+			Handler:    _UserServer_UpdateModel_Handler,
+		},
+		{
+			MethodName: "AddMultistageModel",
+			Handler:    _UserServer_AddMultistageModel_Handler,
+		},
+		{
+			MethodName: "AddTemplateModel",
+			Handler:    _UserServer_AddTemplateModel_Handler,
+		},
+		{
+			MethodName: "GetMultistageModel",
+			Handler:    _UserServer_GetMultistageModel_Handler,
+		},
+		{
+			MethodName: "AddModelTemplate",
+			Handler:    _UserServer_AddModelTemplate_Handler,
+		},
+		{
+			MethodName: "GetModelTemplate",
+			Handler:    _UserServer_GetModelTemplate_Handler,
+		},
+		{
+			MethodName: "GetModelTemplateList",
+			Handler:    _UserServer_GetModelTemplateList_Handler,
+		},
+		{
+			MethodName: "GetModelTemplateGame",
+			Handler:    _UserServer_GetModelTemplateGame_Handler,
+		},
 		{
 			MethodName: "SmsSendLogin",
 			Handler:    _UserServer_SmsSendLogin_Handler,
@@ -1026,6 +1786,10 @@ var UserServer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SetUserConfig",
 			Handler:    _UserServer_SetUserConfig_Handler,
+		},
+		{
+			MethodName: "GetUserRoleList",
+			Handler:    _UserServer_GetUserRoleList_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
