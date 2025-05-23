@@ -31,8 +31,8 @@ func GetConnect(addr string) (pool.Conn, error) {
 	return conn, err
 }
 
-func GetMetadataCtx(traceId, source string, kv ...string) context.Context {
-	wkv := []string{"trace_id", traceId, "project_source", source}
+func GetMetadataCtx(traceId, source, token string, kv ...string) context.Context {
+	wkv := []string{"trace_id", traceId, "project_source", source, "token", token}
 	if len(kv) > 0 {
 		wkv = append(wkv, kv...)
 	}

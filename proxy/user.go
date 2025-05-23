@@ -10,6 +10,7 @@ import (
 type User struct {
 	Url       string
 	Source    string
+	Token     string
 	RequestId string
 	hook      func(logContext string)
 }
@@ -42,7 +43,7 @@ func (u User) ServiceSmsSendLogin(phoneNumber string, smsCodeType pbUser.E_SMS_C
 	}
 	defer conn.Close()
 	client := pbUser.NewUserServerClient(conn.Value())
-	ctx := GetMetadataCtx(u.RequestId, u.Source)
+	ctx := GetMetadataCtx(u.RequestId, u.Source, u.Token)
 	smsSendLoginReq := &pbUser.SMSSendLoginReq{
 		SmsCodeType: smsCodeType,
 		PhoneNumber: phoneNumber,
@@ -63,7 +64,7 @@ func (u User) UserChangeMobile(userId int64, phoneNumber, code string) (*pbUser.
 	}
 	defer conn.Close()
 	client := pbUser.NewUserServerClient(conn.Value())
-	ctx := GetMetadataCtx(u.RequestId, u.Source)
+	ctx := GetMetadataCtx(u.RequestId, u.Source, u.Token)
 	updateUserInfoReq := &pbUser.UpdateUserInfoReq{
 		Uid:        uint64(userId),
 		ModifyType: pbUser.UserModifyType_REBIND_PHONE,
@@ -86,7 +87,7 @@ func (u User) ApiUserLogin(req *pbUser.UserLoginReq) (*pbUser.UserLoginResp, err
 	}
 	defer conn.Close()
 	client := pbUser.NewUserServerClient(conn.Value())
-	ctx := GetMetadataCtx(u.RequestId, u.Source)
+	ctx := GetMetadataCtx(u.RequestId, u.Source, u.Token)
 	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] UserLogin, req:%+v", u.RequestId, req))
 	resp, err := client.UserLogin(ctx, req)
 	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] UserLogin, resp:%+v; err:%v", u.RequestId, resp, err))
@@ -103,7 +104,7 @@ func (u User) GetBaseInfo(userId uint64) (*pbUser.GetUserInfoResp, error) {
 	}
 	defer conn.Close()
 	client := pbUser.NewUserServerClient(conn.Value())
-	ctx := GetMetadataCtx(u.RequestId, u.Source)
+	ctx := GetMetadataCtx(u.RequestId, u.Source, u.Token)
 	req := &pbUser.GetUserInfoReq{
 		Uid: userId,
 	}
@@ -123,7 +124,7 @@ func (u User) GetBaseInfoDecode(userId int64) (*pbUser.GetUserInfoResp, error) {
 	}
 	defer conn.Close()
 	client := pbUser.NewUserServerClient(conn.Value())
-	ctx := GetMetadataCtx(u.RequestId, u.Source)
+	ctx := GetMetadataCtx(u.RequestId, u.Source, u.Token)
 	req := &pbUser.GetUserInfoReq{
 		Uid:        uint64(userId),
 		IsRealAuth: true,
@@ -144,7 +145,7 @@ func (u User) GetUserPhonesByUidList(userIds []uint64) (*pbUser.GetUserPhonesRes
 	}
 	defer conn.Close()
 	client := pbUser.NewUserServerClient(conn.Value())
-	ctx := GetMetadataCtx(u.RequestId, u.Source)
+	ctx := GetMetadataCtx(u.RequestId, u.Source, u.Token)
 	req := &pbUser.GetUserPhonesReq{
 		UidList: userIds,
 	}
@@ -164,7 +165,7 @@ func (u User) GetUserIdByPhone(phone string) (*pbUser.GetUserIdByPhoneResp, erro
 	}
 	defer conn.Close()
 	client := pbUser.NewUserServerClient(conn.Value())
-	ctx := GetMetadataCtx(u.RequestId, u.Source)
+	ctx := GetMetadataCtx(u.RequestId, u.Source, u.Token)
 	req := &pbUser.GetUserIdByPhoneReq{
 		Phone: phone,
 	}
@@ -184,7 +185,7 @@ func (u User) SetBaseInfo(req *pbUser.UpdateUserInfoReq) (*pbUser.UpdateUserInfo
 	}
 	defer conn.Close()
 	client := pbUser.NewUserServerClient(conn.Value())
-	ctx := GetMetadataCtx(u.RequestId, u.Source)
+	ctx := GetMetadataCtx(u.RequestId, u.Source, u.Token)
 	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] UpdateUserInfo, req:%+v", u.RequestId, req))
 	resp, err := client.UpdateUserInfo(ctx, req)
 	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] UpdateUserInfo, resp:%+v; err:%v", u.RequestId, resp, err))
@@ -201,7 +202,7 @@ func (u User) BindWeChat(req *pbUser.OpenIDBindReq) (*pbUser.OpenIDBindResp, err
 	}
 	defer conn.Close()
 	client := pbUser.NewUserServerClient(conn.Value())
-	ctx := GetMetadataCtx(u.RequestId, u.Source)
+	ctx := GetMetadataCtx(u.RequestId, u.Source, u.Token)
 	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] OpenIDBind, req:%+v", u.RequestId, req))
 	resp, err := client.OpenIDBind(ctx, req)
 	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] OpenIDBind, resp:%+v; err:%v", u.RequestId, resp, err))
@@ -244,7 +245,7 @@ func (u User) RealName(userId uint64, userName, userIdNumber string) (*pbUser.Us
 	}
 	defer conn.Close()
 	client := pbUser.NewUserServerClient(conn.Value())
-	ctx := GetMetadataCtx(u.RequestId, u.Source)
+	ctx := GetMetadataCtx(u.RequestId, u.Source, u.Token)
 	req := &pbUser.UserCertificationReq{
 		Uid:          userId,
 		UserName:     userName,
@@ -266,7 +267,7 @@ func (u User) GetTreeUser(userId uint64) (*pbUser.GetOrgTreeUserResp, error) {
 	}
 	defer conn.Close()
 	client := pbUser.NewUserServerClient(conn.Value())
-	ctx := GetMetadataCtx(u.RequestId, u.Source)
+	ctx := GetMetadataCtx(u.RequestId, u.Source, u.Token)
 	req := &pbUser.GetOrgTreeUserReq{
 		UserId: userId,
 	}
@@ -286,7 +287,7 @@ func (u User) BindTreeUser(userId uint64, orgId uint32) (*pbUser.BindUserToOrgan
 	}
 	defer conn.Close()
 	client := pbUser.NewUserServerClient(conn.Value())
-	ctx := GetMetadataCtx(u.RequestId, u.Source)
+	ctx := GetMetadataCtx(u.RequestId, u.Source, u.Token)
 	req := &pbUser.BindUserToOrganizationReq{
 		UserId: userId,
 		OrgId:  orgId,
@@ -307,7 +308,7 @@ func (u User) UnBindTreeUser(userId uint64, orgId uint32) (*pbUser.UnbindUserToO
 	}
 	defer conn.Close()
 	client := pbUser.NewUserServerClient(conn.Value())
-	ctx := GetMetadataCtx(u.RequestId, u.Source)
+	ctx := GetMetadataCtx(u.RequestId, u.Source, u.Token)
 	req := &pbUser.UnbindUserToOrganizationReq{
 		UserId: userId,
 		OrgId:  orgId,
@@ -328,7 +329,7 @@ func (u User) GetTreeUserChildren(orgId uint32) (*pbUser.GetOrganizationChildren
 	}
 	defer conn.Close()
 	client := pbUser.NewUserServerClient(conn.Value())
-	ctx := GetMetadataCtx(u.RequestId, u.Source)
+	ctx := GetMetadataCtx(u.RequestId, u.Source, u.Token)
 	req := &pbUser.GetOrganizationReq{
 		Id: orgId,
 	}
