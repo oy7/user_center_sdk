@@ -339,3 +339,89 @@ func (u User) GetTreeUserChildren(orgId uint32) (*pbUser.GetOrganizationChildren
 
 	return resp, err
 }
+
+// 获取用户实名信息
+func (u User) GetUserSensitiveInfo(userId uint64) (*pbUser.GetUserSensitiveInfoResp, error) {
+	conn, err := GetConnect(u.Url)
+	if err != nil {
+		u.hook(fmt.Sprintf("GetConnect [RequestId:%s] err:%v", u.RequestId, err))
+		return nil, err
+	}
+	defer conn.Close()
+	client := pbUser.NewUserServerClient(conn.Value())
+	ctx := GetMetadataCtx(u.RequestId, u.Source, u.Token)
+	req := &pbUser.GetUserSensitiveInfoReq{}
+	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] GetUserSensitiveInfo, req:%+v", u.RequestId, req))
+	resp, err := client.GetUserSensitiveInfo(ctx, req)
+	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] GetUserSensitiveInfo, resp:%+v; err:%v", u.RequestId, resp, err))
+
+	return resp, err
+}
+
+// GetUserBankInfo 获取用户银行卡信息
+func (u User) GetUserBankInfo(req *pbUser.GetUserBankInfoReq) (*pbUser.GetUserBankInfoResp, error) {
+	conn, err := GetConnect(u.Url)
+	if err != nil {
+		u.hook(fmt.Sprintf("GetConnect [RequestId:%s] err:%v", u.RequestId, err))
+		return nil, err
+	}
+	defer conn.Close()
+	client := pbUser.NewUserServerClient(conn.Value())
+	ctx := GetMetadataCtx(u.RequestId, u.Source, u.Token)
+	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] GetUserBankInfo, req:%+v", u.RequestId, req))
+	resp, err := client.GetUserBankInfo(ctx, req)
+	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] GetUserBankInfo, resp:%+v; err:%v", u.RequestId, resp, err))
+
+	return resp, err
+}
+
+// AddUserBankInfo 新增用户银行卡信息
+func (u User) AddUserBankInfo(req *pbUser.AddUserBankInfoReq) (*pbUser.AddUserBankInfoResp, error) {
+	conn, err := GetConnect(u.Url)
+	if err != nil {
+		u.hook(fmt.Sprintf("GetConnect [RequestId:%s] err:%v", u.RequestId, err))
+		return nil, err
+	}
+	defer conn.Close()
+	client := pbUser.NewUserServerClient(conn.Value())
+	ctx := GetMetadataCtx(u.RequestId, u.Source, u.Token)
+	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] AddUserBankInfo, req:%+v", u.RequestId, req))
+	resp, err := client.AddUserBankInfo(ctx, req)
+	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] AddUserBankInfo, resp:%+v; err:%v", u.RequestId, resp, err))
+
+	return resp, err
+}
+
+// UpdateUserBankInfo 更新用户银行卡信息
+func (u User) UpdateUserBankInfo(req *pbUser.UpdateUserBankInfoReq) (*pbUser.UpdateUserBankInfoResp, error) {
+	conn, err := GetConnect(u.Url)
+	if err != nil {
+		u.hook(fmt.Sprintf("GetConnect [RequestId:%s] err:%v", u.RequestId, err))
+		return nil, err
+	}
+	defer conn.Close()
+	client := pbUser.NewUserServerClient(conn.Value())
+	ctx := GetMetadataCtx(u.RequestId, u.Source, u.Token)
+	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] UpdateUserBankInfo, req:%+v", u.RequestId, req))
+	resp, err := client.UpdateUserBankInfo(ctx, req)
+	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] UpdateUserBankInfo, resp:%+v; err:%v", u.RequestId, resp, err))
+
+	return resp, err
+}
+
+// DeleteUserBankInfo 删除用户银行卡信息
+func (u User) DeleteUserBankInfo(req *pbUser.DeleteUserBankInfoReq) (*pbUser.DeleteUserBankInfoResp, error) {
+	conn, err := GetConnect(u.Url)
+	if err != nil {
+		u.hook(fmt.Sprintf("GetConnect [RequestId:%s] err:%v", u.RequestId, err))
+		return nil, err
+	}
+	defer conn.Close()
+	client := pbUser.NewUserServerClient(conn.Value())
+	ctx := GetMetadataCtx(u.RequestId, u.Source, u.Token)
+	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] DeleteUserBankInfo, req:%+v", u.RequestId, req))
+	resp, err := client.DeleteUserBankInfo(ctx, req)
+	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] DeleteUserBankInfo, resp:%+v; err:%v", u.RequestId, resp, err))
+
+	return resp, err
+}

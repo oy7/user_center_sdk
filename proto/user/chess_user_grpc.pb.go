@@ -49,7 +49,6 @@ const (
 	UserServer_GetUserInfo_FullMethodName               = "/new_chess.UserServer/GetUserInfo"
 	UserServer_BatchGetUserInfo_FullMethodName          = "/new_chess.UserServer/BatchGetUserInfo"
 	UserServer_GetUserIdByPhone_FullMethodName          = "/new_chess.UserServer/GetUserIdByPhone"
-	UserServer_UserCertification_FullMethodName         = "/new_chess.UserServer/UserCertification"
 	UserServer_AddOrgTree_FullMethodName                = "/new_chess.UserServer/AddOrgTree"
 	UserServer_SetOrgTree_FullMethodName                = "/new_chess.UserServer/SetOrgTree"
 	UserServer_DelOrgTree_FullMethodName                = "/new_chess.UserServer/DelOrgTree"
@@ -64,6 +63,15 @@ const (
 	UserServer_GetUserConfig_FullMethodName             = "/new_chess.UserServer/GetUserConfig"
 	UserServer_SetUserConfig_FullMethodName             = "/new_chess.UserServer/SetUserConfig"
 	UserServer_GetUserRoleList_FullMethodName           = "/new_chess.UserServer/GetUserRoleList"
+	UserServer_GetUserSwitchConfig_FullMethodName       = "/new_chess.UserServer/GetUserSwitchConfig"
+	UserServer_PhoneBind_FullMethodName                 = "/new_chess.UserServer/PhoneBind"
+	UserServer_AgentUpdateUserPassword_FullMethodName   = "/new_chess.UserServer/AgentUpdateUserPassword"
+	UserServer_UserCertification_FullMethodName         = "/new_chess.UserServer/UserCertification"
+	UserServer_GetUserSensitiveInfo_FullMethodName      = "/new_chess.UserServer/GetUserSensitiveInfo"
+	UserServer_GetUserBankInfo_FullMethodName           = "/new_chess.UserServer/GetUserBankInfo"
+	UserServer_AddUserBankInfo_FullMethodName           = "/new_chess.UserServer/AddUserBankInfo"
+	UserServer_UpdateUserBankInfo_FullMethodName        = "/new_chess.UserServer/UpdateUserBankInfo"
+	UserServer_DeleteUserBankInfo_FullMethodName        = "/new_chess.UserServer/DeleteUserBankInfo"
 )
 
 // UserServerClient is the client API for UserServer service.
@@ -102,7 +110,6 @@ type UserServerClient interface {
 	GetUserInfo(ctx context.Context, in *GetUserInfoReq, opts ...grpc.CallOption) (*GetUserInfoResp, error)
 	BatchGetUserInfo(ctx context.Context, in *BatchGetUserInfoReq, opts ...grpc.CallOption) (*BatchGetUserInfoResp, error)
 	GetUserIdByPhone(ctx context.Context, in *GetUserIdByPhoneReq, opts ...grpc.CallOption) (*GetUserIdByPhoneResp, error)
-	UserCertification(ctx context.Context, in *UserCertificationReq, opts ...grpc.CallOption) (*UserCertificationResp, error)
 	AddOrgTree(ctx context.Context, in *CreateOrganizationReq, opts ...grpc.CallOption) (*CreateOrganizationResp, error)
 	SetOrgTree(ctx context.Context, in *UpdateOrganizationReq, opts ...grpc.CallOption) (*UpdateOrganizationResp, error)
 	DelOrgTree(ctx context.Context, in *DeleteOrganizationReq, opts ...grpc.CallOption) (*DeleteOrganizationResp, error)
@@ -117,6 +124,16 @@ type UserServerClient interface {
 	GetUserConfig(ctx context.Context, in *GetUserConfigReq, opts ...grpc.CallOption) (*GetUserConfigResp, error)
 	SetUserConfig(ctx context.Context, in *SetUserConfigReq, opts ...grpc.CallOption) (*SetUserConfigResp, error)
 	GetUserRoleList(ctx context.Context, in *UserRoleListReq, opts ...grpc.CallOption) (*UserRoleListResp, error)
+	GetUserSwitchConfig(ctx context.Context, in *GetUserSwitchConfigReq, opts ...grpc.CallOption) (*GetUserSwitchConfigResp, error)
+	PhoneBind(ctx context.Context, in *PhoneBindReq, opts ...grpc.CallOption) (*PhoneBindResp, error)
+	AgentUpdateUserPassword(ctx context.Context, in *AgentUpdateUserPasswordReq, opts ...grpc.CallOption) (*AgentUpdateUserPasswordResp, error)
+	// 用户敏感数据相关
+	UserCertification(ctx context.Context, in *UserCertificationReq, opts ...grpc.CallOption) (*UserCertificationResp, error)
+	GetUserSensitiveInfo(ctx context.Context, in *GetUserSensitiveInfoReq, opts ...grpc.CallOption) (*GetUserSensitiveInfoResp, error)
+	GetUserBankInfo(ctx context.Context, in *GetUserBankInfoReq, opts ...grpc.CallOption) (*GetUserBankInfoResp, error)
+	AddUserBankInfo(ctx context.Context, in *AddUserBankInfoReq, opts ...grpc.CallOption) (*AddUserBankInfoResp, error)
+	UpdateUserBankInfo(ctx context.Context, in *UpdateUserBankInfoReq, opts ...grpc.CallOption) (*UpdateUserBankInfoResp, error)
+	DeleteUserBankInfo(ctx context.Context, in *DeleteUserBankInfoReq, opts ...grpc.CallOption) (*DeleteUserBankInfoResp, error)
 }
 
 type userServerClient struct {
@@ -427,16 +444,6 @@ func (c *userServerClient) GetUserIdByPhone(ctx context.Context, in *GetUserIdBy
 	return out, nil
 }
 
-func (c *userServerClient) UserCertification(ctx context.Context, in *UserCertificationReq, opts ...grpc.CallOption) (*UserCertificationResp, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(UserCertificationResp)
-	err := c.cc.Invoke(ctx, UserServer_UserCertification_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *userServerClient) AddOrgTree(ctx context.Context, in *CreateOrganizationReq, opts ...grpc.CallOption) (*CreateOrganizationResp, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(CreateOrganizationResp)
@@ -577,6 +584,96 @@ func (c *userServerClient) GetUserRoleList(ctx context.Context, in *UserRoleList
 	return out, nil
 }
 
+func (c *userServerClient) GetUserSwitchConfig(ctx context.Context, in *GetUserSwitchConfigReq, opts ...grpc.CallOption) (*GetUserSwitchConfigResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetUserSwitchConfigResp)
+	err := c.cc.Invoke(ctx, UserServer_GetUserSwitchConfig_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServerClient) PhoneBind(ctx context.Context, in *PhoneBindReq, opts ...grpc.CallOption) (*PhoneBindResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(PhoneBindResp)
+	err := c.cc.Invoke(ctx, UserServer_PhoneBind_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServerClient) AgentUpdateUserPassword(ctx context.Context, in *AgentUpdateUserPasswordReq, opts ...grpc.CallOption) (*AgentUpdateUserPasswordResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AgentUpdateUserPasswordResp)
+	err := c.cc.Invoke(ctx, UserServer_AgentUpdateUserPassword_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServerClient) UserCertification(ctx context.Context, in *UserCertificationReq, opts ...grpc.CallOption) (*UserCertificationResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UserCertificationResp)
+	err := c.cc.Invoke(ctx, UserServer_UserCertification_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServerClient) GetUserSensitiveInfo(ctx context.Context, in *GetUserSensitiveInfoReq, opts ...grpc.CallOption) (*GetUserSensitiveInfoResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetUserSensitiveInfoResp)
+	err := c.cc.Invoke(ctx, UserServer_GetUserSensitiveInfo_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServerClient) GetUserBankInfo(ctx context.Context, in *GetUserBankInfoReq, opts ...grpc.CallOption) (*GetUserBankInfoResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetUserBankInfoResp)
+	err := c.cc.Invoke(ctx, UserServer_GetUserBankInfo_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServerClient) AddUserBankInfo(ctx context.Context, in *AddUserBankInfoReq, opts ...grpc.CallOption) (*AddUserBankInfoResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AddUserBankInfoResp)
+	err := c.cc.Invoke(ctx, UserServer_AddUserBankInfo_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServerClient) UpdateUserBankInfo(ctx context.Context, in *UpdateUserBankInfoReq, opts ...grpc.CallOption) (*UpdateUserBankInfoResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UpdateUserBankInfoResp)
+	err := c.cc.Invoke(ctx, UserServer_UpdateUserBankInfo_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServerClient) DeleteUserBankInfo(ctx context.Context, in *DeleteUserBankInfoReq, opts ...grpc.CallOption) (*DeleteUserBankInfoResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DeleteUserBankInfoResp)
+	err := c.cc.Invoke(ctx, UserServer_DeleteUserBankInfo_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServerServer is the server API for UserServer service.
 // All implementations must embed UnimplementedUserServerServer
 // for forward compatibility.
@@ -613,7 +710,6 @@ type UserServerServer interface {
 	GetUserInfo(context.Context, *GetUserInfoReq) (*GetUserInfoResp, error)
 	BatchGetUserInfo(context.Context, *BatchGetUserInfoReq) (*BatchGetUserInfoResp, error)
 	GetUserIdByPhone(context.Context, *GetUserIdByPhoneReq) (*GetUserIdByPhoneResp, error)
-	UserCertification(context.Context, *UserCertificationReq) (*UserCertificationResp, error)
 	AddOrgTree(context.Context, *CreateOrganizationReq) (*CreateOrganizationResp, error)
 	SetOrgTree(context.Context, *UpdateOrganizationReq) (*UpdateOrganizationResp, error)
 	DelOrgTree(context.Context, *DeleteOrganizationReq) (*DeleteOrganizationResp, error)
@@ -628,6 +724,16 @@ type UserServerServer interface {
 	GetUserConfig(context.Context, *GetUserConfigReq) (*GetUserConfigResp, error)
 	SetUserConfig(context.Context, *SetUserConfigReq) (*SetUserConfigResp, error)
 	GetUserRoleList(context.Context, *UserRoleListReq) (*UserRoleListResp, error)
+	GetUserSwitchConfig(context.Context, *GetUserSwitchConfigReq) (*GetUserSwitchConfigResp, error)
+	PhoneBind(context.Context, *PhoneBindReq) (*PhoneBindResp, error)
+	AgentUpdateUserPassword(context.Context, *AgentUpdateUserPasswordReq) (*AgentUpdateUserPasswordResp, error)
+	// 用户敏感数据相关
+	UserCertification(context.Context, *UserCertificationReq) (*UserCertificationResp, error)
+	GetUserSensitiveInfo(context.Context, *GetUserSensitiveInfoReq) (*GetUserSensitiveInfoResp, error)
+	GetUserBankInfo(context.Context, *GetUserBankInfoReq) (*GetUserBankInfoResp, error)
+	AddUserBankInfo(context.Context, *AddUserBankInfoReq) (*AddUserBankInfoResp, error)
+	UpdateUserBankInfo(context.Context, *UpdateUserBankInfoReq) (*UpdateUserBankInfoResp, error)
+	DeleteUserBankInfo(context.Context, *DeleteUserBankInfoReq) (*DeleteUserBankInfoResp, error)
 	mustEmbedUnimplementedUserServerServer()
 }
 
@@ -728,9 +834,6 @@ func (UnimplementedUserServerServer) BatchGetUserInfo(context.Context, *BatchGet
 func (UnimplementedUserServerServer) GetUserIdByPhone(context.Context, *GetUserIdByPhoneReq) (*GetUserIdByPhoneResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserIdByPhone not implemented")
 }
-func (UnimplementedUserServerServer) UserCertification(context.Context, *UserCertificationReq) (*UserCertificationResp, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UserCertification not implemented")
-}
 func (UnimplementedUserServerServer) AddOrgTree(context.Context, *CreateOrganizationReq) (*CreateOrganizationResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddOrgTree not implemented")
 }
@@ -772,6 +875,33 @@ func (UnimplementedUserServerServer) SetUserConfig(context.Context, *SetUserConf
 }
 func (UnimplementedUserServerServer) GetUserRoleList(context.Context, *UserRoleListReq) (*UserRoleListResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserRoleList not implemented")
+}
+func (UnimplementedUserServerServer) GetUserSwitchConfig(context.Context, *GetUserSwitchConfigReq) (*GetUserSwitchConfigResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserSwitchConfig not implemented")
+}
+func (UnimplementedUserServerServer) PhoneBind(context.Context, *PhoneBindReq) (*PhoneBindResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PhoneBind not implemented")
+}
+func (UnimplementedUserServerServer) AgentUpdateUserPassword(context.Context, *AgentUpdateUserPasswordReq) (*AgentUpdateUserPasswordResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AgentUpdateUserPassword not implemented")
+}
+func (UnimplementedUserServerServer) UserCertification(context.Context, *UserCertificationReq) (*UserCertificationResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserCertification not implemented")
+}
+func (UnimplementedUserServerServer) GetUserSensitiveInfo(context.Context, *GetUserSensitiveInfoReq) (*GetUserSensitiveInfoResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserSensitiveInfo not implemented")
+}
+func (UnimplementedUserServerServer) GetUserBankInfo(context.Context, *GetUserBankInfoReq) (*GetUserBankInfoResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserBankInfo not implemented")
+}
+func (UnimplementedUserServerServer) AddUserBankInfo(context.Context, *AddUserBankInfoReq) (*AddUserBankInfoResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddUserBankInfo not implemented")
+}
+func (UnimplementedUserServerServer) UpdateUserBankInfo(context.Context, *UpdateUserBankInfoReq) (*UpdateUserBankInfoResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateUserBankInfo not implemented")
+}
+func (UnimplementedUserServerServer) DeleteUserBankInfo(context.Context, *DeleteUserBankInfoReq) (*DeleteUserBankInfoResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteUserBankInfo not implemented")
 }
 func (UnimplementedUserServerServer) mustEmbedUnimplementedUserServerServer() {}
 func (UnimplementedUserServerServer) testEmbeddedByValue()                    {}
@@ -1334,24 +1464,6 @@ func _UserServer_GetUserIdByPhone_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
-func _UserServer_UserCertification_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UserCertificationReq)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(UserServerServer).UserCertification(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: UserServer_UserCertification_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServerServer).UserCertification(ctx, req.(*UserCertificationReq))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _UserServer_AddOrgTree_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateOrganizationReq)
 	if err := dec(in); err != nil {
@@ -1604,6 +1716,168 @@ func _UserServer_GetUserRoleList_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserServer_GetUserSwitchConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserSwitchConfigReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServerServer).GetUserSwitchConfig(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserServer_GetUserSwitchConfig_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServerServer).GetUserSwitchConfig(ctx, req.(*GetUserSwitchConfigReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserServer_PhoneBind_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PhoneBindReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServerServer).PhoneBind(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserServer_PhoneBind_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServerServer).PhoneBind(ctx, req.(*PhoneBindReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserServer_AgentUpdateUserPassword_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AgentUpdateUserPasswordReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServerServer).AgentUpdateUserPassword(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserServer_AgentUpdateUserPassword_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServerServer).AgentUpdateUserPassword(ctx, req.(*AgentUpdateUserPasswordReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserServer_UserCertification_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserCertificationReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServerServer).UserCertification(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserServer_UserCertification_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServerServer).UserCertification(ctx, req.(*UserCertificationReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserServer_GetUserSensitiveInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserSensitiveInfoReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServerServer).GetUserSensitiveInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserServer_GetUserSensitiveInfo_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServerServer).GetUserSensitiveInfo(ctx, req.(*GetUserSensitiveInfoReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserServer_GetUserBankInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserBankInfoReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServerServer).GetUserBankInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserServer_GetUserBankInfo_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServerServer).GetUserBankInfo(ctx, req.(*GetUserBankInfoReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserServer_AddUserBankInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddUserBankInfoReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServerServer).AddUserBankInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserServer_AddUserBankInfo_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServerServer).AddUserBankInfo(ctx, req.(*AddUserBankInfoReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserServer_UpdateUserBankInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateUserBankInfoReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServerServer).UpdateUserBankInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserServer_UpdateUserBankInfo_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServerServer).UpdateUserBankInfo(ctx, req.(*UpdateUserBankInfoReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserServer_DeleteUserBankInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteUserBankInfoReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServerServer).DeleteUserBankInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserServer_DeleteUserBankInfo_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServerServer).DeleteUserBankInfo(ctx, req.(*DeleteUserBankInfoReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserServer_ServiceDesc is the grpc.ServiceDesc for UserServer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1732,10 +2006,6 @@ var UserServer_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _UserServer_GetUserIdByPhone_Handler,
 		},
 		{
-			MethodName: "UserCertification",
-			Handler:    _UserServer_UserCertification_Handler,
-		},
-		{
 			MethodName: "AddOrgTree",
 			Handler:    _UserServer_AddOrgTree_Handler,
 		},
@@ -1790,6 +2060,42 @@ var UserServer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetUserRoleList",
 			Handler:    _UserServer_GetUserRoleList_Handler,
+		},
+		{
+			MethodName: "GetUserSwitchConfig",
+			Handler:    _UserServer_GetUserSwitchConfig_Handler,
+		},
+		{
+			MethodName: "PhoneBind",
+			Handler:    _UserServer_PhoneBind_Handler,
+		},
+		{
+			MethodName: "AgentUpdateUserPassword",
+			Handler:    _UserServer_AgentUpdateUserPassword_Handler,
+		},
+		{
+			MethodName: "UserCertification",
+			Handler:    _UserServer_UserCertification_Handler,
+		},
+		{
+			MethodName: "GetUserSensitiveInfo",
+			Handler:    _UserServer_GetUserSensitiveInfo_Handler,
+		},
+		{
+			MethodName: "GetUserBankInfo",
+			Handler:    _UserServer_GetUserBankInfo_Handler,
+		},
+		{
+			MethodName: "AddUserBankInfo",
+			Handler:    _UserServer_AddUserBankInfo_Handler,
+		},
+		{
+			MethodName: "UpdateUserBankInfo",
+			Handler:    _UserServer_UpdateUserBankInfo_Handler,
+		},
+		{
+			MethodName: "DeleteUserBankInfo",
+			Handler:    _UserServer_DeleteUserBankInfo_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
