@@ -385,9 +385,9 @@ func (u User) AddUpUserBankInfo(req *pbUser.AddUpUserBankInfoReq) (*pbUser.AddUp
 	defer conn.Close()
 	client := pbUser.NewUserServerClient(conn.Value())
 	ctx := GetMetadataCtx(u.RequestId, u.Source, u.Token)
-	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] AddUserBankInfo, req:%+v", u.RequestId, req))
+	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] AddUpUserBankInfo, req:%+v", u.RequestId, req))
 	resp, err := client.AddUpUserBankInfo(ctx, req)
-	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] AddUserBankInfo, resp:%+v; err:%v", u.RequestId, resp, err))
+	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] AddUpUserBankInfo, resp:%+v; err:%v", u.RequestId, resp, err))
 
 	return resp, err
 }
