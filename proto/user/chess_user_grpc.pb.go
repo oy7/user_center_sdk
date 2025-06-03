@@ -69,8 +69,7 @@ const (
 	UserServer_UserCertification_FullMethodName         = "/new_chess.UserServer/UserCertification"
 	UserServer_GetUserSensitiveInfo_FullMethodName      = "/new_chess.UserServer/GetUserSensitiveInfo"
 	UserServer_GetUserBankInfo_FullMethodName           = "/new_chess.UserServer/GetUserBankInfo"
-	UserServer_AddUserBankInfo_FullMethodName           = "/new_chess.UserServer/AddUserBankInfo"
-	UserServer_UpdateUserBankInfo_FullMethodName        = "/new_chess.UserServer/UpdateUserBankInfo"
+	UserServer_AddUpUserBankInfo_FullMethodName         = "/new_chess.UserServer/AddUpUserBankInfo"
 	UserServer_DeleteUserBankInfo_FullMethodName        = "/new_chess.UserServer/DeleteUserBankInfo"
 )
 
@@ -131,8 +130,7 @@ type UserServerClient interface {
 	UserCertification(ctx context.Context, in *UserCertificationReq, opts ...grpc.CallOption) (*UserCertificationResp, error)
 	GetUserSensitiveInfo(ctx context.Context, in *GetUserSensitiveInfoReq, opts ...grpc.CallOption) (*GetUserSensitiveInfoResp, error)
 	GetUserBankInfo(ctx context.Context, in *GetUserBankInfoReq, opts ...grpc.CallOption) (*GetUserBankInfoResp, error)
-	AddUserBankInfo(ctx context.Context, in *AddUserBankInfoReq, opts ...grpc.CallOption) (*AddUserBankInfoResp, error)
-	UpdateUserBankInfo(ctx context.Context, in *UpdateUserBankInfoReq, opts ...grpc.CallOption) (*UpdateUserBankInfoResp, error)
+	AddUpUserBankInfo(ctx context.Context, in *AddUpUserBankInfoReq, opts ...grpc.CallOption) (*AddUpUserBankInfoResp, error)
 	DeleteUserBankInfo(ctx context.Context, in *DeleteUserBankInfoReq, opts ...grpc.CallOption) (*DeleteUserBankInfoResp, error)
 }
 
@@ -644,20 +642,10 @@ func (c *userServerClient) GetUserBankInfo(ctx context.Context, in *GetUserBankI
 	return out, nil
 }
 
-func (c *userServerClient) AddUserBankInfo(ctx context.Context, in *AddUserBankInfoReq, opts ...grpc.CallOption) (*AddUserBankInfoResp, error) {
+func (c *userServerClient) AddUpUserBankInfo(ctx context.Context, in *AddUpUserBankInfoReq, opts ...grpc.CallOption) (*AddUpUserBankInfoResp, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(AddUserBankInfoResp)
-	err := c.cc.Invoke(ctx, UserServer_AddUserBankInfo_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *userServerClient) UpdateUserBankInfo(ctx context.Context, in *UpdateUserBankInfoReq, opts ...grpc.CallOption) (*UpdateUserBankInfoResp, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(UpdateUserBankInfoResp)
-	err := c.cc.Invoke(ctx, UserServer_UpdateUserBankInfo_FullMethodName, in, out, cOpts...)
+	out := new(AddUpUserBankInfoResp)
+	err := c.cc.Invoke(ctx, UserServer_AddUpUserBankInfo_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -731,8 +719,7 @@ type UserServerServer interface {
 	UserCertification(context.Context, *UserCertificationReq) (*UserCertificationResp, error)
 	GetUserSensitiveInfo(context.Context, *GetUserSensitiveInfoReq) (*GetUserSensitiveInfoResp, error)
 	GetUserBankInfo(context.Context, *GetUserBankInfoReq) (*GetUserBankInfoResp, error)
-	AddUserBankInfo(context.Context, *AddUserBankInfoReq) (*AddUserBankInfoResp, error)
-	UpdateUserBankInfo(context.Context, *UpdateUserBankInfoReq) (*UpdateUserBankInfoResp, error)
+	AddUpUserBankInfo(context.Context, *AddUpUserBankInfoReq) (*AddUpUserBankInfoResp, error)
 	DeleteUserBankInfo(context.Context, *DeleteUserBankInfoReq) (*DeleteUserBankInfoResp, error)
 	mustEmbedUnimplementedUserServerServer()
 }
@@ -894,11 +881,8 @@ func (UnimplementedUserServerServer) GetUserSensitiveInfo(context.Context, *GetU
 func (UnimplementedUserServerServer) GetUserBankInfo(context.Context, *GetUserBankInfoReq) (*GetUserBankInfoResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserBankInfo not implemented")
 }
-func (UnimplementedUserServerServer) AddUserBankInfo(context.Context, *AddUserBankInfoReq) (*AddUserBankInfoResp, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method AddUserBankInfo not implemented")
-}
-func (UnimplementedUserServerServer) UpdateUserBankInfo(context.Context, *UpdateUserBankInfoReq) (*UpdateUserBankInfoResp, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateUserBankInfo not implemented")
+func (UnimplementedUserServerServer) AddUpUserBankInfo(context.Context, *AddUpUserBankInfoReq) (*AddUpUserBankInfoResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddUpUserBankInfo not implemented")
 }
 func (UnimplementedUserServerServer) DeleteUserBankInfo(context.Context, *DeleteUserBankInfoReq) (*DeleteUserBankInfoResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteUserBankInfo not implemented")
@@ -1824,38 +1808,20 @@ func _UserServer_GetUserBankInfo_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
-func _UserServer_AddUserBankInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(AddUserBankInfoReq)
+func _UserServer_AddUpUserBankInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddUpUserBankInfoReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserServerServer).AddUserBankInfo(ctx, in)
+		return srv.(UserServerServer).AddUpUserBankInfo(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: UserServer_AddUserBankInfo_FullMethodName,
+		FullMethod: UserServer_AddUpUserBankInfo_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServerServer).AddUserBankInfo(ctx, req.(*AddUserBankInfoReq))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _UserServer_UpdateUserBankInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateUserBankInfoReq)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(UserServerServer).UpdateUserBankInfo(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: UserServer_UpdateUserBankInfo_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServerServer).UpdateUserBankInfo(ctx, req.(*UpdateUserBankInfoReq))
+		return srv.(UserServerServer).AddUpUserBankInfo(ctx, req.(*AddUpUserBankInfoReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2086,12 +2052,8 @@ var UserServer_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _UserServer_GetUserBankInfo_Handler,
 		},
 		{
-			MethodName: "AddUserBankInfo",
-			Handler:    _UserServer_AddUserBankInfo_Handler,
-		},
-		{
-			MethodName: "UpdateUserBankInfo",
-			Handler:    _UserServer_UpdateUserBankInfo_Handler,
+			MethodName: "AddUpUserBankInfo",
+			Handler:    _UserServer_AddUpUserBankInfo_Handler,
 		},
 		{
 			MethodName: "DeleteUserBankInfo",
