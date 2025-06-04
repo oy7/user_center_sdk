@@ -67,7 +67,8 @@ const (
 	UserServer_PhoneBind_FullMethodName                 = "/new_chess.UserServer/PhoneBind"
 	UserServer_AgentUpdateUserPassword_FullMethodName   = "/new_chess.UserServer/AgentUpdateUserPassword"
 	UserServer_UserCertification_FullMethodName         = "/new_chess.UserServer/UserCertification"
-	UserServer_GetUserSensitiveInfo_FullMethodName      = "/new_chess.UserServer/GetUserSensitiveInfo"
+	UserServer_SubmitFaceVerify_FullMethodName          = "/new_chess.UserServer/SubmitFaceVerify"
+	UserServer_GetUserRealAuthInfo_FullMethodName       = "/new_chess.UserServer/GetUserRealAuthInfo"
 	UserServer_GetUserBankInfo_FullMethodName           = "/new_chess.UserServer/GetUserBankInfo"
 	UserServer_AddUpUserBankInfo_FullMethodName         = "/new_chess.UserServer/AddUpUserBankInfo"
 	UserServer_DeleteUserBankInfo_FullMethodName        = "/new_chess.UserServer/DeleteUserBankInfo"
@@ -128,7 +129,8 @@ type UserServerClient interface {
 	AgentUpdateUserPassword(ctx context.Context, in *AgentUpdateUserPasswordReq, opts ...grpc.CallOption) (*AgentUpdateUserPasswordResp, error)
 	// 用户敏感数据相关
 	UserCertification(ctx context.Context, in *UserCertificationReq, opts ...grpc.CallOption) (*UserCertificationResp, error)
-	GetUserSensitiveInfo(ctx context.Context, in *GetUserSensitiveInfoReq, opts ...grpc.CallOption) (*GetUserSensitiveInfoResp, error)
+	SubmitFaceVerify(ctx context.Context, in *SubmitFaceVerifyReq, opts ...grpc.CallOption) (*SubmitFaceVerifyResp, error)
+	GetUserRealAuthInfo(ctx context.Context, in *GetUserRealAuthReq, opts ...grpc.CallOption) (*GetUserRealAuthResp, error)
 	GetUserBankInfo(ctx context.Context, in *GetUserBankInfoReq, opts ...grpc.CallOption) (*GetUserBankInfoResp, error)
 	AddUpUserBankInfo(ctx context.Context, in *AddUpUserBankInfoReq, opts ...grpc.CallOption) (*AddUpUserBankInfoResp, error)
 	DeleteUserBankInfo(ctx context.Context, in *DeleteUserBankInfoReq, opts ...grpc.CallOption) (*DeleteUserBankInfoResp, error)
@@ -622,10 +624,20 @@ func (c *userServerClient) UserCertification(ctx context.Context, in *UserCertif
 	return out, nil
 }
 
-func (c *userServerClient) GetUserSensitiveInfo(ctx context.Context, in *GetUserSensitiveInfoReq, opts ...grpc.CallOption) (*GetUserSensitiveInfoResp, error) {
+func (c *userServerClient) SubmitFaceVerify(ctx context.Context, in *SubmitFaceVerifyReq, opts ...grpc.CallOption) (*SubmitFaceVerifyResp, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetUserSensitiveInfoResp)
-	err := c.cc.Invoke(ctx, UserServer_GetUserSensitiveInfo_FullMethodName, in, out, cOpts...)
+	out := new(SubmitFaceVerifyResp)
+	err := c.cc.Invoke(ctx, UserServer_SubmitFaceVerify_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServerClient) GetUserRealAuthInfo(ctx context.Context, in *GetUserRealAuthReq, opts ...grpc.CallOption) (*GetUserRealAuthResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetUserRealAuthResp)
+	err := c.cc.Invoke(ctx, UserServer_GetUserRealAuthInfo_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -717,7 +729,8 @@ type UserServerServer interface {
 	AgentUpdateUserPassword(context.Context, *AgentUpdateUserPasswordReq) (*AgentUpdateUserPasswordResp, error)
 	// 用户敏感数据相关
 	UserCertification(context.Context, *UserCertificationReq) (*UserCertificationResp, error)
-	GetUserSensitiveInfo(context.Context, *GetUserSensitiveInfoReq) (*GetUserSensitiveInfoResp, error)
+	SubmitFaceVerify(context.Context, *SubmitFaceVerifyReq) (*SubmitFaceVerifyResp, error)
+	GetUserRealAuthInfo(context.Context, *GetUserRealAuthReq) (*GetUserRealAuthResp, error)
 	GetUserBankInfo(context.Context, *GetUserBankInfoReq) (*GetUserBankInfoResp, error)
 	AddUpUserBankInfo(context.Context, *AddUpUserBankInfoReq) (*AddUpUserBankInfoResp, error)
 	DeleteUserBankInfo(context.Context, *DeleteUserBankInfoReq) (*DeleteUserBankInfoResp, error)
@@ -875,8 +888,11 @@ func (UnimplementedUserServerServer) AgentUpdateUserPassword(context.Context, *A
 func (UnimplementedUserServerServer) UserCertification(context.Context, *UserCertificationReq) (*UserCertificationResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserCertification not implemented")
 }
-func (UnimplementedUserServerServer) GetUserSensitiveInfo(context.Context, *GetUserSensitiveInfoReq) (*GetUserSensitiveInfoResp, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetUserSensitiveInfo not implemented")
+func (UnimplementedUserServerServer) SubmitFaceVerify(context.Context, *SubmitFaceVerifyReq) (*SubmitFaceVerifyResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SubmitFaceVerify not implemented")
+}
+func (UnimplementedUserServerServer) GetUserRealAuthInfo(context.Context, *GetUserRealAuthReq) (*GetUserRealAuthResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserRealAuthInfo not implemented")
 }
 func (UnimplementedUserServerServer) GetUserBankInfo(context.Context, *GetUserBankInfoReq) (*GetUserBankInfoResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserBankInfo not implemented")
@@ -1772,20 +1788,38 @@ func _UserServer_UserCertification_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
-func _UserServer_GetUserSensitiveInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetUserSensitiveInfoReq)
+func _UserServer_SubmitFaceVerify_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SubmitFaceVerifyReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserServerServer).GetUserSensitiveInfo(ctx, in)
+		return srv.(UserServerServer).SubmitFaceVerify(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: UserServer_GetUserSensitiveInfo_FullMethodName,
+		FullMethod: UserServer_SubmitFaceVerify_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServerServer).GetUserSensitiveInfo(ctx, req.(*GetUserSensitiveInfoReq))
+		return srv.(UserServerServer).SubmitFaceVerify(ctx, req.(*SubmitFaceVerifyReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserServer_GetUserRealAuthInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserRealAuthReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServerServer).GetUserRealAuthInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserServer_GetUserRealAuthInfo_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServerServer).GetUserRealAuthInfo(ctx, req.(*GetUserRealAuthReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2044,8 +2078,12 @@ var UserServer_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _UserServer_UserCertification_Handler,
 		},
 		{
-			MethodName: "GetUserSensitiveInfo",
-			Handler:    _UserServer_GetUserSensitiveInfo_Handler,
+			MethodName: "SubmitFaceVerify",
+			Handler:    _UserServer_SubmitFaceVerify_Handler,
+		},
+		{
+			MethodName: "GetUserRealAuthInfo",
+			Handler:    _UserServer_GetUserRealAuthInfo_Handler,
 		},
 		{
 			MethodName: "GetUserBankInfo",

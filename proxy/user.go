@@ -341,7 +341,7 @@ func (u User) GetTreeUserChildren(orgId uint32) (*pbUser.GetOrganizationChildren
 }
 
 // 获取用户实名信息
-func (u User) GetUserSensitiveInfo(userId uint64) (*pbUser.GetUserSensitiveInfoResp, error) {
+func (u User) GetUserRealAuthInfo() (*pbUser.GetUserRealAuthResp, error) {
 	conn, err := GetConnect(u.Url)
 	if err != nil {
 		u.hook(fmt.Sprintf("GetConnect [RequestId:%s] err:%v", u.RequestId, err))
@@ -350,10 +350,27 @@ func (u User) GetUserSensitiveInfo(userId uint64) (*pbUser.GetUserSensitiveInfoR
 	defer conn.Close()
 	client := pbUser.NewUserServerClient(conn.Value())
 	ctx := GetMetadataCtx(u.RequestId, u.Source, u.Token)
-	req := &pbUser.GetUserSensitiveInfoReq{}
-	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] GetUserSensitiveInfo, req:%+v", u.RequestId, req))
-	resp, err := client.GetUserSensitiveInfo(ctx, req)
-	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] GetUserSensitiveInfo, resp:%+v; err:%v", u.RequestId, resp, err))
+	req := &pbUser.GetUserRealAuthReq{}
+	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] GetUserRealAuthInfo, req:%+v", u.RequestId, req))
+	resp, err := client.GetUserRealAuthInfo(ctx, req)
+	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] GetUserRealAuthInfo, resp:%+v; err:%v", u.RequestId, resp, err))
+
+	return resp, err
+}
+
+// 提交人脸识别信息
+func (u User) SubmitFaceVerify(req *pbUser.SubmitFaceVerifyReq) (*pbUser.SubmitFaceVerifyResp, error) {
+	conn, err := GetConnect(u.Url)
+	if err != nil {
+		u.hook(fmt.Sprintf("GetConnect [RequestId:%s] err:%v", u.RequestId, err))
+		return nil, err
+	}
+	defer conn.Close()
+	client := pbUser.NewUserServerClient(conn.Value())
+	ctx := GetMetadataCtx(u.RequestId, u.Source, u.Token)
+	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] SubmitFaceVerify, req:%+v", u.RequestId, req))
+	resp, err := client.SubmitFaceVerify(ctx, req)
+	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] SubmitFaceVerify, resp:%+v; err:%v", u.RequestId, resp, err))
 
 	return resp, err
 }
