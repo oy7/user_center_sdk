@@ -340,8 +340,8 @@ func (u User) GetTreeUserChildren(orgId uint32) (*pbUser.GetOrganizationChildren
 	return resp, err
 }
 
-// 获取用户实名信息
-func (u User) GetUserRealAuthInfo() (*pbUser.GetUserRealAuthResp, error) {
+// 聊天风险检测(contentType内容类型 1-文本 2-图片url 3-语音 4-视频 5-文件）
+func (u User) ChatRiskCheck(contentType int32, content, messageId string) (*pbUser.UserChatRiskCheckResp, error) {
 	conn, err := GetConnect(u.Url)
 	if err != nil {
 		u.hook(fmt.Sprintf("GetConnect [RequestId:%s] err:%v", u.RequestId, err))
@@ -350,16 +350,20 @@ func (u User) GetUserRealAuthInfo() (*pbUser.GetUserRealAuthResp, error) {
 	defer conn.Close()
 	client := pbUser.NewUserServerClient(conn.Value())
 	ctx := GetMetadataCtx(u.RequestId, u.Source, u.Token)
-	req := &pbUser.GetUserRealAuthReq{}
-	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] GetUserRealAuthInfo, req:%+v", u.RequestId, req))
-	resp, err := client.GetUserRealAuthInfo(ctx, req)
-	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] GetUserRealAuthInfo, resp:%+v; err:%v", u.RequestId, resp, err))
+	req := &pbUser.UserChatRiskCheckReq{
+		ContentType: contentType,
+		Content:     content,
+		MessageId:   messageId,
+	}
+	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] UserChatRiskCheck, req:%+v", u.RequestId, req))
+	resp, err := client.UserChatRiskCheck(ctx, req)
+	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] UserChatRiskCheck, resp:%+v; err:%v", u.RequestId, resp, err))
 
 	return resp, err
 }
 
-// 提交人脸识别信息
-func (u User) SubmitFaceVerify(req *pbUser.SubmitFaceVerifyReq) (*pbUser.SubmitFaceVerifyResp, error) {
+// 查询用户风险记录
+func (u User) GetUserRiskInfo(userId uint64) (*pbUser.GetUserRiskInfoResp, error) {
 	conn, err := GetConnect(u.Url)
 	if err != nil {
 		u.hook(fmt.Sprintf("GetConnect [RequestId:%s] err:%v", u.RequestId, err))
@@ -368,60 +372,13 @@ func (u User) SubmitFaceVerify(req *pbUser.SubmitFaceVerifyReq) (*pbUser.SubmitF
 	defer conn.Close()
 	client := pbUser.NewUserServerClient(conn.Value())
 	ctx := GetMetadataCtx(u.RequestId, u.Source, u.Token)
-	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] SubmitFaceVerify, req:%+v", u.RequestId, req))
-	resp, err := client.SubmitFaceVerify(ctx, req)
-	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] SubmitFaceVerify, resp:%+v; err:%v", u.RequestId, resp, err))
-
-	return resp, err
-}
-
-// GetUserBankInfo 获取用户银行卡信息
-func (u User) GetUserBankInfo(req *pbUser.GetUserBankInfoReq) (*pbUser.GetUserBankInfoResp, error) {
-	conn, err := GetConnect(u.Url)
-	if err != nil {
-		u.hook(fmt.Sprintf("GetConnect [RequestId:%s] err:%v", u.RequestId, err))
-		return nil, err
+	req := &pbUser.GetUserRiskInfoReq{
+		Uid: userId,
 	}
-	defer conn.Close()
-	client := pbUser.NewUserServerClient(conn.Value())
-	ctx := GetMetadataCtx(u.RequestId, u.Source, u.Token)
-	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] GetUserBankInfo, req:%+v", u.RequestId, req))
-	resp, err := client.GetUserBankInfo(ctx, req)
-	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] GetUserBankInfo, resp:%+v; err:%v", u.RequestId, resp, err))
+	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] GetUserRiskInfo, req:%+v", u.RequestId, req))
+	resp, err := client.GetUserRiskInfo(ctx, req)
+	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] GetUserRiskInfo, resp:%+v; err:%v", u.RequestId, resp, err))
 
 	return resp, err
-}
 
-// AddUpUserBankInfo 新增/更新用户银行卡信息
-func (u User) AddUpUserBankInfo(req *pbUser.AddUpUserBankInfoReq) (*pbUser.AddUpUserBankInfoResp, error) {
-	conn, err := GetConnect(u.Url)
-	if err != nil {
-		u.hook(fmt.Sprintf("GetConnect [RequestId:%s] err:%v", u.RequestId, err))
-		return nil, err
-	}
-	defer conn.Close()
-	client := pbUser.NewUserServerClient(conn.Value())
-	ctx := GetMetadataCtx(u.RequestId, u.Source, u.Token)
-	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] AddUpUserBankInfo, req:%+v", u.RequestId, req))
-	resp, err := client.AddUpUserBankInfo(ctx, req)
-	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] AddUpUserBankInfo, resp:%+v; err:%v", u.RequestId, resp, err))
-
-	return resp, err
-}
-
-// DeleteUserBankInfo 删除用户银行卡信息
-func (u User) DeleteUserBankInfo(req *pbUser.DeleteUserBankInfoReq) (*pbUser.DeleteUserBankInfoResp, error) {
-	conn, err := GetConnect(u.Url)
-	if err != nil {
-		u.hook(fmt.Sprintf("GetConnect [RequestId:%s] err:%v", u.RequestId, err))
-		return nil, err
-	}
-	defer conn.Close()
-	client := pbUser.NewUserServerClient(conn.Value())
-	ctx := GetMetadataCtx(u.RequestId, u.Source, u.Token)
-	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] DeleteUserBankInfo, req:%+v", u.RequestId, req))
-	resp, err := client.DeleteUserBankInfo(ctx, req)
-	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] DeleteUserBankInfo, resp:%+v; err:%v", u.RequestId, resp, err))
-
-	return resp, err
 }
