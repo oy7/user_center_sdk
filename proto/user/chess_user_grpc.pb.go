@@ -70,6 +70,8 @@ const (
 	UserServer_BatchGetUserDevice_FullMethodName        = "/new_chess.UserServer/BatchGetUserDevice"
 	UserServer_UserChatRiskCheck_FullMethodName         = "/new_chess.UserServer/UserChatRiskCheck"
 	UserServer_GetUserRiskInfo_FullMethodName           = "/new_chess.UserServer/GetUserRiskInfo"
+	UserServer_UserBan_FullMethodName                   = "/new_chess.UserServer/UserBan"
+	UserServer_UserUnBan_FullMethodName                 = "/new_chess.UserServer/UserUnBan"
 )
 
 // UserServerClient is the client API for UserServer service.
@@ -128,8 +130,9 @@ type UserServerClient interface {
 	AgentUpdateUserPassword(ctx context.Context, in *AgentUpdateUserPasswordReq, opts ...grpc.CallOption) (*AgentUpdateUserPasswordResp, error)
 	BatchGetUserDevice(ctx context.Context, in *BatchGetUserDeviceReq, opts ...grpc.CallOption) (*BatchGetUserDeviceResp, error)
 	UserChatRiskCheck(ctx context.Context, in *UserChatRiskCheckReq, opts ...grpc.CallOption) (*UserChatRiskCheckResp, error)
-	// 查询用户风险信息
 	GetUserRiskInfo(ctx context.Context, in *GetUserRiskInfoReq, opts ...grpc.CallOption) (*GetUserRiskInfoResp, error)
+	UserBan(ctx context.Context, in *UserBanReq, opts ...grpc.CallOption) (*UserBanResp, error)
+	UserUnBan(ctx context.Context, in *UserUnBanReq, opts ...grpc.CallOption) (*UserUnBanResp, error)
 }
 
 type userServerClient struct {
@@ -650,6 +653,26 @@ func (c *userServerClient) GetUserRiskInfo(ctx context.Context, in *GetUserRiskI
 	return out, nil
 }
 
+func (c *userServerClient) UserBan(ctx context.Context, in *UserBanReq, opts ...grpc.CallOption) (*UserBanResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UserBanResp)
+	err := c.cc.Invoke(ctx, UserServer_UserBan_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServerClient) UserUnBan(ctx context.Context, in *UserUnBanReq, opts ...grpc.CallOption) (*UserUnBanResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UserUnBanResp)
+	err := c.cc.Invoke(ctx, UserServer_UserUnBan_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServerServer is the server API for UserServer service.
 // All implementations must embed UnimplementedUserServerServer
 // for forward compatibility.
@@ -706,8 +729,9 @@ type UserServerServer interface {
 	AgentUpdateUserPassword(context.Context, *AgentUpdateUserPasswordReq) (*AgentUpdateUserPasswordResp, error)
 	BatchGetUserDevice(context.Context, *BatchGetUserDeviceReq) (*BatchGetUserDeviceResp, error)
 	UserChatRiskCheck(context.Context, *UserChatRiskCheckReq) (*UserChatRiskCheckResp, error)
-	// 查询用户风险信息
 	GetUserRiskInfo(context.Context, *GetUserRiskInfoReq) (*GetUserRiskInfoResp, error)
+	UserBan(context.Context, *UserBanReq) (*UserBanResp, error)
+	UserUnBan(context.Context, *UserUnBanReq) (*UserUnBanResp, error)
 	mustEmbedUnimplementedUserServerServer()
 }
 
@@ -870,6 +894,12 @@ func (UnimplementedUserServerServer) UserChatRiskCheck(context.Context, *UserCha
 }
 func (UnimplementedUserServerServer) GetUserRiskInfo(context.Context, *GetUserRiskInfoReq) (*GetUserRiskInfoResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserRiskInfo not implemented")
+}
+func (UnimplementedUserServerServer) UserBan(context.Context, *UserBanReq) (*UserBanResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserBan not implemented")
+}
+func (UnimplementedUserServerServer) UserUnBan(context.Context, *UserUnBanReq) (*UserUnBanResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserUnBan not implemented")
 }
 func (UnimplementedUserServerServer) mustEmbedUnimplementedUserServerServer() {}
 func (UnimplementedUserServerServer) testEmbeddedByValue()                    {}
@@ -1810,6 +1840,42 @@ func _UserServer_GetUserRiskInfo_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserServer_UserBan_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserBanReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServerServer).UserBan(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserServer_UserBan_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServerServer).UserBan(ctx, req.(*UserBanReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserServer_UserUnBan_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserUnBanReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServerServer).UserUnBan(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserServer_UserUnBan_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServerServer).UserUnBan(ctx, req.(*UserUnBanReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserServer_ServiceDesc is the grpc.ServiceDesc for UserServer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -2020,6 +2086,14 @@ var UserServer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetUserRiskInfo",
 			Handler:    _UserServer_GetUserRiskInfo_Handler,
+		},
+		{
+			MethodName: "UserBan",
+			Handler:    _UserServer_UserBan_Handler,
+		},
+		{
+			MethodName: "UserUnBan",
+			Handler:    _UserServer_UserUnBan_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
