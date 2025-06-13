@@ -351,9 +351,10 @@ func (u User) ChatRiskCheck(contentType int32, content, messageId string) (*pbUs
 	client := pbUser.NewUserServerClient(conn.Value())
 	ctx := GetMetadataCtx(u.RequestId, u.Source, u.Token)
 	req := &pbUser.UserChatRiskCheckReq{
-		ContentType: contentType,
-		Content:     content,
-		MessageId:   messageId,
+		ContentType:   contentType,
+		Content:       content,
+		MessageId:     messageId,
+		ProjectSource: u.Source,
 	}
 	u.hook(fmt.Sprintf("grpcRequest [RequestId:%s] UserChatRiskCheck, req:%+v", u.RequestId, req))
 	resp, err := client.UserChatRiskCheck(ctx, req)
